@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUTRITOP – Turn Your Ordinary Breakfast Into Complete Nutrition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ─────────────────────────────────────── */
+:root {
+  --green:      #1A6B3C;
+  --green-mid:  #228B50;
+  --green-lt:   #E8F5EE;
+  --green-glow: rgba(26,107,60,0.15);
+  --orange:     #E85D20;
+  --orange-lt:  #FFF1EB;
+  --gold:       #C9890A;
+  --gold-lt:    #FFF8E6;
+  --cream:      #FDFAF4;
+  --paper:      #F5F0E8;
+  --brown:      #3D2608;
+  --mocha:      #7A5030;
+  --muted:      #9A8470;
+  --text:       #1E1408;
+  --white:      #FFFFFF;
+  --border:     rgba(61,38,8,0.1);
+  --shadow-sm:  0 2px 12px rgba(61,38,8,0.08);
+  --shadow-md:  0 8px 32px rgba(61,38,8,0.12);
+  --shadow-lg:  0 20px 60px rgba(61,38,8,0.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+/* MOBILE FIX: added padding-bottom so content clears sticky WA button */
+body{background:var(--cream);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;overflow-x:hidden;line-height:1.6;padding-bottom:90px;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");opacity:.5;}
+img{display:block;max-width:100%;}
+
+/* ─── UTILS ─────────────────────── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.up{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .65s ease,transform .65s ease;}
+.reveal-left.up{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity .65s ease,transform .65s ease;}
+.reveal-right.up{opacity:1;transform:translateX(0);}
+
+/* ─── SCARCITY BAR ──────────────── */
+.scarcity-bar{background:linear-gradient(90deg,var(--orange) 0%,#C0401A 100%);color:#fff;padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:.8rem;font-weight:600;letter-spacing:.5px;position:relative;overflow:hidden;flex-wrap:wrap;text-align:center;}
+.scarcity-bar::before{content:'';position:absolute;left:-100%;top:0;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);animation:shine 3s infinite;}
+@keyframes shine{to{left:150%;}}
+.sc-dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1.1s infinite;flex-shrink:0;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.sc-counter{background:rgba(0,0,0,.2);padding:2px 10px;border-radius:100px;font-weight:700;font-size:.78rem;}
+
+/* ─── NAV ───────────────────────── */
+nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:16px 5vw;background:rgba(253,250,244,.95);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm);}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo-img{width:44px;height:44px;border-radius:6px;object-fit:cover;}
+.logo{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--green);letter-spacing:1px;}
+.logo sup{font-size:.55rem;font-weight:700;color:var(--orange);vertical-align:super;letter-spacing:1px;text-transform:uppercase;}
+.nav-right{display:flex;align-items:center;gap:20px;}
+.nav-trust{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:6px;}
+.nav-trust span{color:var(--green);font-weight:700;}
+.btn-wa-nav{display:flex;align-items:center;gap:8px;background:var(--green);color:#fff;font-size:.78rem;font-weight:700;letter-spacing:1px;padding:10px 22px;text-decoration:none;border:none;cursor:pointer;border-radius:3px;transition:all .2s;white-space:nowrap;}
+.btn-wa-nav:hover{background:var(--green-mid);transform:translateY(-1px);box-shadow:0 4px 16px var(--green-glow);}
+
+/* ─── HERO ──────────────────────── */
+/* MOBILE FIX: replaced min-height:92vh with auto + padding */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:auto;padding:40px 0;overflow:hidden;}
+.hero-left{background:var(--cream);display:flex;flex-direction:column;justify-content:center;padding:70px 5vw 70px 7vw;position:relative;}
+.hero-left::after{content:'';position:absolute;right:-1px;top:0;bottom:0;width:80px;background:linear-gradient(90deg,transparent,var(--cream));pointer-events:none;z-index:2;}
+.hero-problem{display:inline-flex;align-items:center;gap:8px;background:#FFF3F0;border:1px solid rgba(232,93,32,.2);color:var(--orange);font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;margin-bottom:24px;border-radius:2px;animation:fadeUp .6s ease both;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,4.5vw,5rem);font-weight:900;line-height:1.07;color:var(--brown);margin-bottom:24px;animation:fadeUp .7s .1s ease both;}
+.hero h1 em{font-style:italic;color:var(--green);}
+.hero h1 u{text-decoration:none;background:linear-gradient(180deg,transparent 60%,rgba(201,137,10,.3) 60%);}
+.hero-sub{font-size:1.05rem;line-height:1.8;color:var(--mocha);font-weight:300;max-width:460px;margin-bottom:8px;animation:fadeUp .7s .2s ease both;}
+/* NEW: taste punchline */
+.hero-taste{font-size:.92rem;font-weight:600;color:var(--brown);margin-bottom:10px;animation:fadeUp .7s .22s ease both;letter-spacing:.2px;}
+.hero-taste span{color:var(--orange);}
+.hero-micro{font-size:.85rem;color:var(--muted);margin-bottom:6px;font-style:italic;animation:fadeUp .7s .25s ease both;}
+.hero-micro strong{color:var(--orange);font-style:normal;font-weight:700;}
+.hero-social-proof{font-size:.82rem;font-weight:600;color:var(--green);background:var(--green-lt);border:1px solid rgba(26,107,60,.2);padding:7px 14px;border-radius:2px;margin-bottom:28px;display:inline-flex;align-items:center;gap:6px;animation:fadeUp .7s .28s ease both;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:10px;animation:fadeUp .7s .4s ease both;}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--white);border:1px solid var(--border);font-size:.75rem;font-weight:600;color:var(--mocha);padding:6px 12px;border-radius:100px;}
+.pill-icon{font-size:.9rem;}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--green);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:18px 38px;text-decoration:none;border:none;cursor:pointer;border-radius:3px;transition:all .25s;box-shadow:0 4px 20px var(--green-glow);}
+.btn-primary:hover{background:var(--green-mid);transform:translateY(-2px);box-shadow:0 8px 30px var(--green-glow);}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--brown);font-size:.82rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:18px 28px;text-decoration:none;border:1.5px solid var(--border);border-radius:3px;cursor:pointer;transition:all .2s;}
+.btn-secondary:hover{border-color:var(--green);color:var(--green);}
+
+/* Hero right */
+.hero-right{position:relative;overflow:hidden;background:#1A3020;}
+.hero-right img{width:100%;height:100%;object-fit:cover;opacity:.9;transition:transform 8s ease;transform:scale(1.06);}
+.hero-right:hover img{transform:scale(1);}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(26,48,32,.75) 100%);}
+.hero-float-card{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);background:var(--white);padding:18px 24px;border-radius:4px;box-shadow:var(--shadow-lg);width:calc(100% - 48px);max-width:340px;animation:fadeUp .8s .5s ease both;}
+.hfc-row{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.hfc-price-block .big{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:var(--green);line-height:1;display:block;}
+.hfc-price-block .scratch{font-size:.8rem;color:var(--muted);text-decoration:line-through;display:block;margin-top:2px;}
+.hfc-price-block .per{font-size:.7rem;color:var(--orange);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.hfc-divider{width:1px;height:48px;background:var(--border);}
+.hfc-info{flex:1;}
+.hfc-info .title{font-size:.85rem;font-weight:700;color:var(--brown);margin-bottom:4px;}
+.hfc-info .sub{font-size:.75rem;color:var(--muted);line-height:1.4;}
+/* NEW: habit trigger in float card */
+.hfc-habit{font-size:.7rem;font-weight:700;color:var(--green);background:var(--green-lt);padding:5px 10px;border-radius:2px;margin-top:10px;text-align:center;letter-spacing:.3px;}
+.hfc-badge{position:absolute;top:-12px;right:20px;background:var(--orange);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border-radius:2px;}
+
+/* ─── STRIP ─────────────────────── */
+.strip{background:var(--green);padding:13px 0;overflow:hidden;white-space:nowrap;}
+.strip-inner{display:inline-flex;animation:scrl 25s linear infinite;}
+.strip-item{font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.65);padding:0 44px;}
+.strip-item b{color:rgba(255,255,255,.95);}
+.strip-item .dot{color:rgba(255,255,255,.3);margin-right:44px;}
+@keyframes scrl{to{transform:translateX(-50%);}}
+
+/* ─── HOW TO USE (30 SECONDS) ──── */
+.howto30{padding:60px 7vw;background:var(--white);border-bottom:1px solid var(--border);}
+.howto30-inner{max-width:900px;margin:0 auto;}
+.howto30-title{text-align:center;margin-bottom:40px;}
+.howto30-title .section-tag{justify-content:center;margin-bottom:12px;}
+.howto30-title h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:900;color:var(--brown);line-height:1.1;}
+.howto30-title h2 em{font-style:italic;color:var(--green);}
+.howto30-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border);}
+.ht30-step{background:var(--cream);padding:32px 28px;position:relative;text-align:center;transition:background .2s;}
+.ht30-step:hover{background:var(--white);}
+.ht30-num{font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;color:rgba(26,107,60,.1);line-height:1;margin-bottom:8px;display:block;}
+.ht30-icon{font-size:2.4rem;margin-bottom:14px;display:block;}
+.ht30-title{font-weight:700;font-size:1rem;color:var(--brown);margin-bottom:6px;}
+.ht30-desc{font-size:.85rem;color:var(--muted);font-weight:300;line-height:1.6;}
+.ht30-arrow{display:none;position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:1.4rem;color:var(--green);z-index:2;}
+@media(min-width:600px){.ht30-arrow{display:block;}}
+.howto30-cta{text-align:center;margin-top:32px;}
+.howto30-cta p{font-size:.88rem;color:var(--muted);margin-bottom:16px;font-style:italic;}
+
+/* ─── PROBLEM SECTION ───────────── */
+.problem{padding:100px 7vw;background:var(--brown);color:#fff;position:relative;overflow:hidden;}
+.problem::before{content:'';position:absolute;right:-200px;top:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(26,107,60,.25) 0%,transparent 70%);pointer-events:none;}
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.problem-tag{font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.problem-tag::before{content:'';width:24px;height:1px;background:var(--gold);}
+.problem h2{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,3.5vw,3.8rem);font-weight:900;line-height:1.1;color:#fff;margin-bottom:24px;}
+.problem h2 em{font-style:italic;color:var(--gold);}
+.problem p{font-size:1rem;line-height:1.85;color:rgba(255,255,255,.65);font-weight:300;margin-bottom:16px;}
+.oats-vs{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:32px;border-radius:4px;}
+.oats-vs-title{font-size:.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:20px;text-align:center;}
+.ov-row{display:flex;align-items:stretch;gap:12px;}
+.ov-col{flex:1;padding:20px;border-radius:3px;text-align:center;}
+.ov-col.bad{background:rgba(232,93,32,.12);border:1px solid rgba(232,93,32,.2);}
+.ov-col.good{background:rgba(26,107,60,.15);border:1px solid rgba(26,107,60,.3);}
+.ov-col .label{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;display:block;}
+.ov-col.bad .label{color:var(--orange);}
+.ov-col.good .label{color:#4ACA7C;}
+.ov-item{font-size:.82rem;color:rgba(255,255,255,.55);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06);line-height:1.4;}
+.ov-item:last-child{border-bottom:none;}
+.ov-item.highlight{color:#fff;font-weight:600;}
+.ov-plus{display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:rgba(255,255,255,.2);flex-shrink:0;}
+.ov-result{margin-top:14px;padding:14px;background:rgba(26,107,60,.2);border:1px solid rgba(26,107,60,.3);text-align:center;border-radius:3px;font-size:.85rem;font-weight:600;color:#4ACA7C;}
+
+/* ─── BENEFITS ──────────────────── */
+.benefits{padding:100px 7vw;background:var(--cream);}
+.benefits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:56px;background:var(--border);border:1px solid var(--border);}
+.benefit-card{background:var(--cream);padding:36px 30px;transition:background .25s;position:relative;overflow:hidden;}
+.benefit-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--green);transform:scaleX(0);transition:transform .3s;transform-origin:left;}
+.benefit-card:hover{background:var(--white);}
+.benefit-card:hover::after{transform:scaleX(1);}
+.bc-icon{font-size:2.2rem;margin-bottom:16px;display:block;}
+.bc-title{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--brown);margin-bottom:10px;}
+.bc-body{font-size:.87rem;line-height:1.7;color:var(--mocha);font-weight:300;margin-bottom:14px;}
+.bc-proof{font-size:.75rem;font-weight:700;color:var(--green);display:flex;align-items:center;gap:6px;letter-spacing:.5px;}
+.bc-proof::before{content:'→';font-size:.8rem;}
+
+/* ─── INGREDIENTS ───────────────── */
+.ingredients{padding:100px 7vw;background:var(--paper);}
+.ing-intro{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center;margin-bottom:60px;}
+.ing-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.ing-card{background:var(--white);padding:22px 18px;border:1px solid var(--border);border-radius:3px;transition:all .25s;}
+.ing-card:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.ic-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.ic-gram{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--green);line-height:1;}
+.ic-gram small{font-size:.75rem;color:var(--muted);font-weight:400;font-family:'Plus Jakarta Sans',sans-serif;}
+.ic-dot{width:8px;height:8px;border-radius:50%;background:var(--green-lt);border:2px solid var(--green);flex-shrink:0;}
+.ic-name{font-size:.9rem;font-weight:700;color:var(--brown);margin-bottom:4px;}
+.ic-benefit{font-size:.75rem;color:var(--muted);line-height:1.4;font-weight:300;}
+.ic-tag{display:inline-block;background:var(--green-lt);color:var(--green);font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;margin-top:8px;border-radius:2px;}
+
+/* ─── VALUE COMPARISON ──────────────── */
+.value-section{padding:100px 7vw;background:linear-gradient(135deg,var(--green) 0%,#0F4A27 100%);color:#fff;position:relative;overflow:hidden;}
+.value-section::before{content:'';position:absolute;right:-150px;bottom:-150px;width:500px;height:500px;border-radius:50%;border:80px solid rgba(255,255,255,.04);pointer-events:none;}
+.value-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.value-tag{font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.value-tag::before{content:'';width:24px;height:1px;background:var(--gold);}
+.value h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3.8rem);font-weight:900;line-height:1.1;color:#fff;margin-bottom:16px;}
+.value h2 em{font-style:italic;color:var(--gold);}
+.value p{font-size:1rem;line-height:1.85;color:rgba(255,255,255,.65);font-weight:300;}
+.value .protein-bar-line{margin-top:18px;padding:14px 18px;background:rgba(255,255,255,.08);border-left:3px solid var(--gold);font-size:.88rem;font-weight:600;color:rgba(255,255,255,.9);}
+.price-table{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:4px;overflow:hidden;}
+.pt-head{background:rgba(255,255,255,.08);display:grid;grid-template-columns:2fr 1fr 1fr;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);padding:14px 20px;gap:10px;}
+.pt-row{display:grid;grid-template-columns:2fr 1fr 1fr;padding:14px 20px;gap:10px;border-top:1px solid rgba(255,255,255,.06);font-size:.88rem;align-items:center;transition:background .2s;}
+.pt-row:hover{background:rgba(255,255,255,.04);}
+.pt-row .item{color:rgba(255,255,255,.75);font-weight:300;}
+.pt-row .qty{color:rgba(255,255,255,.4);font-size:.78rem;}
+.pt-row .price{color:rgba(255,255,255,.75);font-weight:600;}
+.pt-total{background:rgba(232,93,32,.15);border-top:1px solid rgba(232,93,32,.3);display:grid;grid-template-columns:2fr 1fr 1fr;padding:16px 20px;gap:10px;font-weight:700;}
+.pt-total .item{color:rgba(255,255,255,.55);font-size:.82rem;}
+.pt-total .price{color:var(--orange);font-size:1rem;}
+.pt-vs{margin-top:14px;padding:16px 20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:3px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.pt-vs .label{font-size:.78rem;color:rgba(255,255,255,.55);}
+.pt-vs .val{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--gold);}
+.pt-vs .save{background:rgba(201,137,10,.2);color:var(--gold);font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:2px;}
+.per-serving-callout{margin-top:14px;text-align:center;font-size:.85rem;color:rgba(255,255,255,.55);}
+.per-serving-callout strong{color:#fff;font-size:1rem;}
+
+/* ─── MEALS / VISUALS ───────────── */
+.meals{padding:100px 7vw;background:var(--white);}
+.meals-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;margin-top:56px;height:520px;}
+.meal-card{position:relative;overflow:hidden;border-radius:3px;background:var(--paper);}
+.meal-card.big{grid-row:1/3;}
+.meal-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+.meal-card:hover img{transform:scale(1.07);}
+.meal-card-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(26,48,32,.82) 100%);}
+.meal-info{position:absolute;bottom:0;left:0;right:0;padding:22px 20px;}
+.meal-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;font-style:italic;color:#fff;margin-bottom:4px;}
+.meal-tag{font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);}
+.meal-badge{position:absolute;top:14px;right:14px;background:var(--orange);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:2px;}
+
+/* ─── WHO IS THIS FOR ────────────── */
+.whofor{padding:100px 7vw;background:var(--cream);}
+.persona-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:56px;}
+.persona{background:var(--white);padding:34px 26px;border:1.5px solid var(--border);border-radius:4px;text-align:center;transition:all .3s;position:relative;overflow:hidden;}
+.persona::before{content:'';position:absolute;bottom:0;left:0;right:0;height:0;background:linear-gradient(180deg,var(--green-lt) 0%,transparent 100%);transition:height .3s;z-index:0;}
+.persona:hover{border-color:var(--green);transform:translateY(-4px);box-shadow:var(--shadow-md);}
+.persona:hover::before{height:100%;}
+.persona *{position:relative;z-index:1;}
+.persona-icon{font-size:2.6rem;margin-bottom:16px;display:block;}
+.persona h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--brown);margin-bottom:10px;}
+.persona p{font-size:.82rem;line-height:1.65;color:var(--muted);font-weight:300;}
+.persona-tag{display:inline-block;background:var(--green-lt);color:var(--green);font-size:.65rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-top:12px;}
+
+/* ─── TRUST BUILDERS ─────────────── */
+.trust{padding:70px 7vw;background:var(--paper);}
+.trust-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:var(--border);border:1px solid var(--border);margin-top:48px;}
+.trust-item{background:var(--white);padding:28px 20px;text-align:center;transition:background .2s;}
+.trust-item:hover{background:var(--cream);}
+.ti-icon{font-size:2rem;margin-bottom:12px;display:block;}
+.ti-title{font-size:.82rem;font-weight:700;color:var(--brown);margin-bottom:4px;line-height:1.3;}
+.ti-sub{font-size:.72rem;color:var(--muted);line-height:1.4;font-weight:300;}
+.hindi-trust{margin-top:28px;text-align:center;font-family:'Playfair Display',serif;font-size:1.4rem;font-style:italic;color:var(--green);}
+.hindi-trust span{font-size:.85rem;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-style:normal;display:block;margin-top:4px;font-weight:300;}
+
+/* ─── SOCIAL PROOF ───────────────── */
+.social-proof{padding:80px 7vw;background:var(--cream);}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;}
+.review-card{background:var(--white);padding:28px;border-radius:4px;border:1.5px solid var(--border);transition:all .3s;}
+.review-card:hover{border-color:var(--green);box-shadow:var(--shadow-md);}
+.stars{color:var(--gold);font-size:1rem;letter-spacing:2px;margin-bottom:14px;}
+.review-text{font-size:.92rem;line-height:1.75;color:var(--mocha);font-style:italic;font-weight:300;margin-bottom:18px;}
+.reviewer{display:flex;align-items:center;gap:12px;}
+.reviewer-avatar{width:40px;height:40px;border-radius:50%;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.reviewer-name{font-size:.85rem;font-weight:700;color:var(--brown);}
+.reviewer-meta{font-size:.72rem;color:var(--muted);}
+.proof-placeholder{margin-top:8px;background:var(--paper);border:1.5px dashed rgba(61,38,8,.15);padding:20px;border-radius:3px;text-align:center;font-size:.78rem;color:var(--muted);}
+
+/* ─── REPEAT PURCHASE SECTION ──── */
+.repeat-section{padding:70px 7vw;background:var(--brown);color:#fff;text-align:center;}
+.repeat-inner{max-width:860px;margin:0 auto;}
+.repeat-tag{font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:10px;margin-bottom:16px;}
+.repeat-tag::before{content:'';width:24px;height:1px;background:var(--gold);}
+.repeat-inner h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:12px;}
+.repeat-inner h2 em{font-style:italic;color:var(--gold);}
+.repeat-inner p{font-size:.95rem;color:rgba(255,255,255,.6);font-weight:300;max-width:540px;margin:0 auto 36px;}
+.repeat-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);margin-bottom:36px;}
+.rs-item{background:rgba(255,255,255,.04);padding:28px 20px;}
+.rs-item .rs-num{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:900;color:var(--gold);line-height:1;display:block;margin-bottom:6px;}
+.rs-item .rs-label{font-size:.78rem;color:rgba(255,255,255,.55);letter-spacing:.5px;}
+.repeat-cta-row{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+
+/* ─── ORDER ON WHATSAPP CTA BLOCK ── */
+.wa-cta-block{padding:60px 7vw;background:var(--green);text-align:center;position:relative;overflow:hidden;}
+.wa-cta-block::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;border:80px solid rgba(255,255,255,.05);pointer-events:none;}
+.wa-cta-block h3{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.8rem);font-weight:900;color:#fff;margin-bottom:10px;position:relative;z-index:1;}
+.wa-cta-block p{font-size:.95rem;color:rgba(255,255,255,.7);font-weight:300;margin-bottom:28px;position:relative;z-index:1;}
+.btn-wa-big{display:inline-flex;align-items:center;gap:12px;background:#fff;color:var(--green);font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:18px 40px;text-decoration:none;border-radius:3px;transition:all .25s;box-shadow:0 4px 20px rgba(0,0,0,.15);position:relative;z-index:1;}
+.btn-wa-big:hover{background:var(--cream);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.2);}
+.wa-sub-note{font-size:.78rem;color:rgba(255,255,255,.5);margin-top:14px;position:relative;z-index:1;}
+
+/* ─── PRICING ────────────────────── */
+.pricing{padding:100px 7vw;background:var(--white);}
+.urgency-strip{background:linear-gradient(90deg,#FFF3F0,#FFF8E6);border:1.5px solid rgba(232,93,32,.2);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:48px;border-radius:3px;}
+.us-left{display:flex;align-items:center;gap:12px;}
+.us-dot{width:9px;height:9px;border-radius:50%;background:var(--orange);animation:blink 1.1s infinite;flex-shrink:0;}
+.us-text{font-size:.88rem;font-weight:600;color:var(--brown);}
+.us-text em{color:var(--orange);font-style:normal;}
+.us-timer{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--orange);background:var(--orange-lt);padding:6px 16px;border-radius:2px;}
+.pricing-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.p-card{background:var(--cream);padding:40px 32px;border:1.5px solid var(--border);border-radius:4px;position:relative;transition:all .3s;}
+.p-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);}
+.p-card.hero-card{background:var(--brown);border-color:var(--brown);transform:scale(1.03);}
+.p-card.hero-card:hover{transform:scale(1.03) translateY(-4px);}
+.p-card.hero-card .p-tier,.p-card.hero-card .p-desc,.p-card.hero-card .p-feature,.p-card.hero-card .p-per{color:rgba(255,255,255,.75)!important;}
+.p-card.hero-card .p-price{color:var(--gold)!important;}
+.p-card.hero-card .p-price .cents{color:rgba(201,137,10,.7)!important;}
+.p-card.hero-card .p-list li{border-color:rgba(255,255,255,.08)!important;}
+.p-card.hero-card .p-list li::before{color:#4ACA7C!important;}
+.p-card.hero-card .p-badge{background:var(--orange)!important;}
+.p-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;white-space:nowrap;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 16px;border-radius:0 0 3px 3px;}
+.p-tier{font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;padding-top:10px;}
+.p-price{font-family:'Playfair Display',serif;font-size:4rem;font-weight:900;color:var(--brown);line-height:1;margin-bottom:4px;display:flex;align-items:flex-start;gap:2px;}
+.p-price .cents{font-size:2rem;color:var(--muted);margin-top:6px;}
+.p-per{font-size:.78rem;color:var(--muted);margin-bottom:6px;}
+.p-smart{font-size:.78rem;color:var(--orange);font-weight:700;background:var(--orange-lt);display:inline-block;padding:3px 10px;border-radius:2px;margin-bottom:22px;}
+.p-list{list-style:none;margin-bottom:30px;}
+.p-list li{font-size:.86rem;color:var(--mocha);padding:9px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;font-weight:300;}
+.p-list li::before{content:'✓';color:var(--green);font-weight:700;font-size:.9rem;flex-shrink:0;}
+.p-scratch{font-size:.78rem;color:var(--muted);text-decoration:line-through;margin-bottom:4px;}
+.habit-line{margin-top:32px;text-align:center;font-size:.82rem;font-weight:600;color:var(--green);background:var(--green-lt);border:1px solid rgba(26,107,60,.2);padding:12px 20px;border-radius:3px;}
+
+/* ─── FAQ ─────────────────────────── */
+.faq{padding:100px 7vw;background:var(--cream);}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:56px;}
+.faq-item{background:var(--white);border:1.5px solid var(--border);border-radius:3px;overflow:hidden;cursor:pointer;}
+.faq-q{padding:22px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:.95rem;font-weight:600;color:var(--brown);transition:background .2s;}
+.faq-item:hover .faq-q{background:var(--cream);}
+.faq-icon{width:28px;height:28px;border-radius:50%;background:var(--green-lt);display:flex;align-items:center;justify-content:center;color:var(--green);font-size:1.2rem;font-weight:700;flex-shrink:0;transition:transform .3s;}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--green);color:#fff;}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;font-size:.88rem;line-height:1.75;color:var(--mocha);font-weight:300;padding:0 24px;}
+.faq-a p{padding-bottom:20px;}
+.faq-item.open .faq-a{max-height:200px;}
+
+/* ─── FINAL CTA ──────────────────── */
+.final-cta{padding:100px 7vw;background:linear-gradient(135deg,var(--brown) 0%,#1A0F04 100%);text-align:center;position:relative;overflow:hidden;}
+.final-cta::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:700px;height:700px;border-radius:50%;border:100px solid rgba(26,107,60,.08);pointer-events:none;}
+.final-cta::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:400px;height:400px;border-radius:50%;border:60px solid rgba(26,107,60,.06);pointer-events:none;}
+.final-cta .section-tag{color:var(--gold);margin-bottom:20px;display:inline-flex;align-items:center;gap:10px;}
+.final-cta .section-tag::before{background:var(--gold);}
+.final-cta h2{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,5vw,5.5rem);font-weight:900;color:#fff;line-height:1.07;margin-bottom:24px;position:relative;z-index:1;}
+.final-cta h2 em{font-style:italic;color:var(--gold);}
+.final-cta p{font-size:1.05rem;color:rgba(255,255,255,.55);font-weight:300;max-width:480px;margin:0 auto 44px;line-height:1.8;position:relative;z-index:1;}
+.final-actions{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;position:relative;z-index:1;margin-bottom:36px;}
+.btn-big{display:inline-flex;align-items:center;gap:12px;background:var(--green);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:20px 44px;text-decoration:none;border:none;cursor:pointer;border-radius:3px;transition:all .25s;box-shadow:0 4px 30px rgba(26,107,60,.5);}
+.btn-big:hover{background:var(--green-mid);transform:translateY(-2px);box-shadow:0 8px 40px rgba(26,107,60,.6);}
+.btn-big.orange{background:var(--orange);box-shadow:0 4px 30px rgba(232,93,32,.4);}
+.btn-big.orange:hover{background:#c94a15;box-shadow:0 8px 40px rgba(232,93,32,.5);}
+.final-guarantee{font-size:.82rem;color:rgba(255,255,255,.35);position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:8px;}
+
+/* ─── ORDER FORM ──────────────────── */
+.order-form-section{padding:80px 7vw;background:var(--paper);}
+.checkout-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.urgency-mini{margin:10px 0 14px;background:var(--orange-lt);border:1px solid rgba(232,93,32,.25);padding:8px 12px;border-radius:6px;font-size:.8rem;color:var(--brown);font-weight:600;}
+.success-order-id{margin-top:10px;background:var(--green-lt);padding:10px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.success-order-id code{font-weight:700;color:var(--green);}
+.product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.product-card{border:1.5px solid var(--border);border-radius:10px;padding:12px;background:#fff;cursor:pointer;transition:all .2s;position:relative;}
+.product-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);}
+.product-card.selected{border-color:var(--green);box-shadow:0 10px 24px rgba(26,107,60,.16);transform:scale(1.01);}
+.product-card img{width:100%;height:110px;object-fit:cover;border-radius:8px;background:var(--paper);}
+.pc-title{font-weight:800;color:var(--brown);font-size:.9rem;margin-top:10px;}
+.pc-detail{font-size:.78rem;color:var(--mocha);}
+.pc-tag{display:inline-block;margin-top:6px;font-size:.66rem;font-weight:700;letter-spacing:.8px;background:var(--green-lt);color:var(--green);padding:4px 8px;border-radius:999px;}
+.pc-note{font-size:.72rem;color:var(--orange);margin-top:6px;font-weight:700;}
+.pc-old{font-size:.74rem;color:var(--muted);text-decoration:line-through;margin-left:6px;}
+.pc-badge{position:absolute;top:8px;right:8px;background:var(--orange);color:#fff;font-size:.6rem;font-weight:700;padding:4px 6px;border-radius:6px;}
+.delivery-note{font-size:.76rem;color:var(--mocha);background:var(--cream);padding:10px 12px;border:1px dashed rgba(61,38,8,.2);border-radius:8px;}
+
+.order-wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:start;background:var(--white);border-radius:4px;padding:60px;border:1.5px solid var(--border);box-shadow:var(--shadow-sm);}
+.order-left h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,3rem);font-weight:800;color:var(--brown);line-height:1.15;margin-bottom:16px;}
+.order-left h2 em{font-style:italic;color:var(--green);}
+.order-left p{font-size:.92rem;line-height:1.8;color:var(--mocha);font-weight:300;margin-bottom:28px;}
+.trust-list{display:flex;flex-direction:column;gap:12px;}
+.tl-item{display:flex;align-items:center;gap:12px;font-size:.85rem;color:var(--mocha);}
+.tl-icon{font-size:1.1rem;flex-shrink:0;}
+.tl-item strong{color:var(--green);}
+.o-form{display:flex;flex-direction:column;gap:14px;}
+.o-input,.o-select{background:var(--cream);border:1.5px solid var(--border);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.92rem;font-weight:400;padding:15px 18px;outline:none;width:100%;border-radius:3px;transition:border-color .2s;-webkit-appearance:none;}
+.o-input::placeholder{color:var(--muted);}
+.o-input:focus,.o-select:focus{border-color:var(--green);background:var(--white);}
+.o-select{cursor:pointer;color:var(--muted);}
+.o-select option{color:var(--text);background:var(--cream);}
+.o-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.o-note{font-size:.75rem;color:var(--muted);text-align:center;margin-top:4px;}
+.success-msg{display:none;background:var(--green-lt);border:1.5px solid rgba(26,107,60,.3);padding:28px;border-radius:3px;text-align:center;}
+.success-msg h3{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--green);margin-bottom:8px;}
+.success-msg p{font-size:.88rem;color:var(--mocha);}
+
+/* ─── FOOTER ──────────────────────── */
+footer{background:var(--brown);padding:50px 7vw;}
+.footer-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.08);}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px;}
+.footer-logo-img{width:44px;height:44px;border-radius:6px;object-fit:cover;}
+.footer-logo sup{font-size:.5rem;vertical-align:super;color:var(--gold);letter-spacing:1px;}
+.footer-text{font-size:.78rem;color:rgba(255,255,255,.35);line-height:1.7;}
+.footer-trust{display:flex;gap:16px;flex-wrap:wrap;}
+.ft-badge{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.5);}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-legal{font-size:.72rem;color:rgba(255,255,255,.25);line-height:1.7;}
+
+/* ─── STICKY WA ───────────────────── */
+/* MOBILE FIX: tighter position so it doesn't overlap content */
+.wa-sticky{position:fixed;bottom:18px;right:18px;z-index:500;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+.wa-bubble{background:rgba(255,255,255,.95);backdrop-filter:blur(8px);padding:10px 16px;border-radius:100px;box-shadow:var(--shadow-md);font-size:.78rem;font-weight:600;color:var(--brown);animation:fadeUp .5s 1s ease both;white-space:nowrap;}
+.wa-btn{width:60px;height:60px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.7rem;text-decoration:none;color:#fff;box-shadow:0 4px 20px rgba(37,211,102,.45);animation:wabounce 3s ease-in-out infinite;}
+.wa-btn:hover{animation:none;transform:scale(1.1);}
+@keyframes wabounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+
+/* ─── SECTION COMMON ──────────────── */
+.section-tag{font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.section-tag::before{content:'';width:24px;height:1px;background:var(--green);}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,3.5vw,3.8rem);font-weight:900;color:var(--brown);line-height:1.1;}
+.section-title em{font-style:italic;color:var(--green);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ─── RESPONSIVE ──────────────────── */
+@media(max-width:980px){
+  .hero{grid-template-columns:1fr;padding:0;}
+  .hero-right{height:55vw;min-height:260px;}
+  .hero-left::after{display:none;}
+  .hero-left{padding:40px 5vw;}
+  .problem-grid,.value-inner,.ing-intro,.order-wrap{grid-template-columns:1fr;gap:48px;}
+  .benefits-grid{grid-template-columns:1fr 1fr;}
+  .persona-grid{grid-template-columns:1fr 1fr;}
+  .trust-grid{grid-template-columns:repeat(3,1fr);}
+  .reviews-grid{grid-template-columns:1fr 1fr;}
+  .pricing-cards{grid-template-columns:1fr;}
+  .p-card.hero-card{transform:none;}
+  .faq-grid{grid-template-columns:1fr;}
+  .meals-grid{grid-template-columns:1fr 1fr;height:auto;}
+  .meal-card.big{grid-column:1/3;height:300px;}
+  .meal-card{height:200px;}
+  .order-wrap{padding:36px;}
+  .howto30-steps{grid-template-columns:1fr;}
+  .repeat-stats{grid-template-columns:1fr;}
+  .ing-cards{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  /* MOBILE: tighter padding throughout */
+  .hero{padding:0;}
+  .hero-left{padding:28px 5vw 32px;}
+  .hero h1{font-size:clamp(1.8rem,7vw,2.6rem);}
+  .hero-sub{font-size:.92rem;}
+  .hero-right{height:260px;min-height:220px;}
+  .hero-float-card{bottom:16px;padding:14px 16px;width:calc(100% - 32px);}
+  .hfc-price-block .big{font-size:1.8rem;}
+  .hfc-info .title{font-size:.78rem;}
+  .hfc-info .sub{font-size:.68rem;}
+
+  /* NAV mobile */
+  nav{padding:10px 4vw;gap:8px;}
+  .nav-logo-img{width:36px;height:36px;}
+  .logo{font-size:1.2rem;}
+  .nav-right .nav-trust{display:none;}
+  .btn-wa-nav{padding:8px 14px;font-size:.7rem;letter-spacing:.5px;}
+
+  /* Scarcity bar */
+  .scarcity-bar{padding:8px 12px;font-size:.7rem;gap:6px;}
+  .sc-counter{font-size:.68rem;padding:2px 8px;}
+
+  /* Section padding */
+  .benefits,.ingredients,.whofor,.social-proof,.faq{padding:60px 5vw;}
+  .problem{padding:60px 5vw;}
+  .value-section{padding:60px 5vw;}
+  .meals{padding:60px 5vw;}
+  .trust{padding:50px 5vw;}
+  .repeat-section{padding:50px 5vw;}
+  .wa-cta-block{padding:50px 5vw;}
+  .order-form-section{padding:50px 4vw;}
+   .checkout-actions{grid-template-columns:1fr;}
+  .product-grid{grid-template-columns:1fr;}
+  .product-card img{height:130px;}
+  #oAddress{min-height:84px;}
+  .final-cta{padding:60px 5vw;}
+  footer{padding:40px 5vw;}
+
+  /* Grids */
+  .benefits-grid{grid-template-columns:1fr;}
+  .persona-grid{grid-template-columns:1fr;}
+  .trust-grid{grid-template-columns:1fr 1fr;}
+  .reviews-grid{grid-template-columns:1fr;}
+  .ing-cards{grid-template-columns:1fr;}
+  .meals-grid{grid-template-columns:1fr;}
+  .meal-card.big{grid-column:1;height:240px;}
+  .meal-card{height:200px;}
+  .o-row{grid-template-columns:1fr;}
+  .order-wrap{padding:24px 18px;gap:32px;}
+
+  /* Pricing */
+  .pricing{padding:60px 5vw;}
+  .pricing-cards{gap:20px;}
+  .p-card{padding:28px 20px;}
+  .p-price{font-size:3rem;}
+  .urgency-strip{flex-direction:column;text-align:center;padding:14px 16px;}
+  .us-left{flex-direction:column;text-align:center;gap:8px;}
+
+  /* Buttons mobile */
+  .btn-primary{padding:14px 20px;font-size:.8rem;width:100%;justify-content:center;}
+  .btn-secondary{padding:14px 16px;font-size:.75rem;width:100%;justify-content:center;}
+  .btn-big{padding:16px 24px;font-size:.85rem;width:100%;justify-content:center;}
+  .btn-wa-big{padding:16px 28px;font-size:.88rem;}
+  .hero-actions{flex-direction:column;gap:10px;}
+
+  /* Repeat section */
+  .repeat-stats{grid-template-columns:1fr;}
+  .repeat-cta-row{flex-direction:column;align-items:stretch;}
+  .repeat-cta-row a{text-align:center;justify-content:center;}
+
+  /* Footer mobile */
+  .footer-top{flex-direction:column;gap:16px;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+  .footer-legal{text-align:center!important;}
+  .footer-trust{justify-content:center;}
+
+  /* Final CTA */
+  .final-cta h2{font-size:clamp(1.8rem,7vw,3rem);}
+  .final-actions{flex-direction:column;gap:10px;align-items:stretch;}
+
+  /* FAQ mobile */
+  .faq-q{font-size:.88rem;padding:16px 18px;}
+  .faq-a{padding:0 18px;}
+
+  /* Hero pills wrap */
+  .hero-pills{gap:6px;}
+  .pill{font-size:.68rem;padding:5px 10px;}
+
+  /* Section titles smaller on mobile */
+  .section-title{font-size:clamp(1.6rem,6vw,2.4rem);}
+
+  /* Sticky WA mobile */
+  .wa-sticky{bottom:14px;right:14px;}
+  .wa-btn{width:52px;height:52px;font-size:1.4rem;}
+  .wa-bubble{font-size:.72rem;padding:8px 12px;}
+
+  /* Strip text */
+  .strip{padding:10px 0;}
+  .strip-item{font-size:.68rem;padding:0 24px;}
+
+  /* How-to section */
+  .howto30{padding:50px 5vw;}
+  .ht30-step{padding:24px 20px;}
+
+  /* Value section */
+  .price-table{font-size:.82rem;}
+  .pt-head{font-size:.6rem;padding:10px 14px;}
+  .pt-row{padding:10px 14px;font-size:.8rem;}
+  .pt-total{padding:12px 14px;}
+  .pt-vs{flex-direction:column;text-align:center;gap:8px;}
+  .pt-vs .val{font-size:1.5rem;}
+}
+@media(max-width:380px){
+  .hero h1{font-size:1.6rem;}
+  .hero-left{padding:20px 4vw 28px;}
+  nav{padding:8px 3vw;}
+  .logo{font-size:1rem;}
+  .btn-wa-nav{padding:7px 10px;font-size:.65rem;}
+  .nav-logo-img{width:30px;height:30px;}
+  .persona-grid{grid-template-columns:1fr;}
+  .trust-grid{grid-template-columns:1fr;}
+  .p-price{font-size:2.6rem;}
+  .section-title{font-size:clamp(1.4rem,5.5vw,2rem);}
+  .hfc-row{flex-direction:column;gap:10px;}
+  .hfc-divider{width:100%;height:1px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── SCARCITY BAR ── -->
+<div class="scarcity-bar">
+  <div class="sc-dot"></div>
+  <span>🚀 Launch Offer — Limited Trial Packs &nbsp;·&nbsp;</span>
+  <span class="sc-counter" id="spotsLeft">Only 43 Packs Left</span>
+  <span>&nbsp;·&nbsp; 87 packs already delivered in Lucknow</span>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-brand">
+    <img src="images/logo.jpeg" alt="NUTRITOP Logo" class="nav-logo-img">
+    <span class="logo">NUTRITOP<sup>®</sup></span>
+  </a>
+  <div class="nav-right">
+    <div class="nav-trust">🌿 <span>No Added Sugar</span> &nbsp;·&nbsp; 🏭 <span>Made Fresh, Lucknow</span></div>
+    <a href="#order" class="btn-wa-nav">🛒 Buy Now / COD</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-problem">⚠️ Launch Offer — Limited Trial Packs Available</div>
+    <h1>
+      Your oats are good.<br>
+      <em>But they're mostly<br>just carbs.</em>
+    </h1>
+    <p class="hero-sub">
+      NUTRITOP is a premium dry fruit, nut &amp; seed topping — one spoon turns your ordinary breakfast into a <u>complete, balanced meal</u> with protein, omega fats, fibre and minerals.
+    </p>
+    <!-- TASTE PUNCHLINE — added after hero-sub -->
+    <p class="hero-taste">🌰 <span>Crunchy. Nutty. Roasted aroma.</span> Light natural sweetness — every single morning.</p>
+    <p class="hero-micro">
+      <strong>Just ₹19 per breakfast.</strong> Less than the cost of one samosa. Better nutrition than most protein bars.
+    </p>
+    <!-- SOCIAL PROOF — updated to 87 packs -->
+    <div class="hero-social-proof">
+      👥 87 packs already delivered in Lucknow
+    </div>
+    <div class="hero-actions" style="animation:fadeUp .7s .3s ease both;">
+      <a href="#order" class="btn-primary">🛒 Buy Now - ₹99</a>
+      <a href="#benefits" class="btn-secondary">See What It Does →</a>
+    </div>
+    <div class="hero-pills">
+      <span class="pill"><span class="pill-icon">🌰</span> 9 Real Ingredients</span>
+      <span class="pill"><span class="pill-icon">🚫</span> Zero Added Sugar</span>
+      <span class="pill"><span class="pill-icon">🏭</span> Freshly Packed Every Week</span>
+      <span class="pill"><span class="pill-icon">💵</span> Pay on Delivery</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="images/bowl.png" alt="Crunchy nutty oats bowl with NUTRITOP topping" loading="eager">
+    <div class="hero-overlay"></div>
+    <div class="hero-float-card">
+      <div class="hfc-badge">🔥 Trial Pack</div>
+      <div class="hfc-row">
+        <div class="hfc-price-block">
+          <span class="big">₹99</span>
+          <span class="scratch">₹139 MRP</span>
+          <span class="per">= ₹19 per breakfast</span>
+        </div>
+        <div class="hfc-divider"></div>
+        <div class="hfc-info">
+          <div class="title">50g Trial Pack</div>
+          <div class="sub">5–6 servings · Free delivery in Lucknow · Pay on delivery</div>
+        </div>
+      </div>
+      <!-- HABIT TRIGGER — added inside float card -->
+      <div class="hfc-habit">🔁 Most customers reorder within 7 days</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STRIP ── -->
+<div class="strip">
+  <div class="strip-inner">
+    <span class="strip-item"><b>No Added Sugar</b> <span class="dot">✦</span></span>
+    <span class="strip-item">Crunchy · Nutty · Roasted Aroma · Light Natural Sweetness</span>
+    <span class="strip-item"><b>₹19 Per Breakfast</b> <span class="dot">✦</span></span>
+    <span class="strip-item">Freshly Packed Every Week, Lucknow</span>
+    <span class="strip-item"><b>Pay on Delivery</b> <span class="dot">✦</span></span>
+    <span class="strip-item">Better than Most Protein Bars</span>
+    <span class="strip-item"><b>87 Packs Delivered in Lucknow</b> <span class="dot">✦</span></span>
+    <span class="strip-item">No Added Sugar <span class="dot">✦</span></span>
+    <span class="strip-item">Crunchy · Nutty · Roasted Aroma · Light Natural Sweetness</span>
+    <span class="strip-item"><b>₹19 Per Breakfast</b> <span class="dot">✦</span></span>
+    <span class="strip-item">Freshly Packed Every Week, Lucknow</span>
+    <span class="strip-item"><b>Pay on Delivery</b> <span class="dot">✦</span></span>
+    <span class="strip-item">Better than Most Protein Bars</span>
+    <span class="strip-item"><b>87 Packs Delivered in Lucknow</b> <span class="dot">✦</span></span>
+  </div>
+</div>
+
+<!-- ── HOW TO USE IN 30 SECONDS ── -->
+<section class="howto30">
+  <div class="howto30-inner">
+    <div class="howto30-title reveal">
+      <div class="section-tag" style="justify-content:center;">Super Simple</div>
+      <h2>How to Use in <em>30 Seconds</em></h2>
+    </div>
+    <div class="howto30-steps reveal">
+      <div class="ht30-step">
+        <span class="ht30-num">01</span>
+        <span class="ht30-icon">🥣</span>
+        <div class="ht30-title">Make your breakfast</div>
+        <div class="ht30-desc">Oats, dahi, cornflakes or warm milk — whatever you already eat. Nothing changes.</div>
+        <span class="ht30-arrow">→</span>
+      </div>
+      <div class="ht30-step">
+        <span class="ht30-num">02</span>
+        <span class="ht30-icon">🥄</span>
+        <div class="ht30-title">Add 1 spoon NUTRITOP</div>
+        <div class="ht30-desc">Open the pack. Take 1–2 spoons. Sprinkle on top. The crunchy roasted aroma is instant.</div>
+        <span class="ht30-arrow">→</span>
+      </div>
+      <div class="ht30-step">
+        <span class="ht30-num">03</span>
+        <span class="ht30-icon">✅</span>
+        <div class="ht30-title">Eat — Done.</div>
+        <div class="ht30-desc">Your breakfast now has protein, omega fats, fibre and minerals. Nutty, crunchy, naturally sweet. That's it.</div>
+      </div>
+    </div>
+    <div class="howto30-cta reveal">
+      <p>Takes less time than making chai. ₹19 per breakfast. Less than a samosa.</p>
+      <a href="https://wa.me/918127240991?text=Hi%20I%20want%20Trial%20Pack%20%E2%82%B999" target="_blank" class="btn-primary">📱 Order Trial Pack — ₹99</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEM / SCIENCE ── -->
+<section class="problem">
+  <div class="problem-grid reveal">
+    <div>
+      <div class="problem-tag">The Real Problem</div>
+      <h2>Oats alone won't cut it. <em>Here's why.</em></h2>
+      <p>Most of us eat oats or cornflakes and think we've sorted breakfast. Good start — but plain oats are 70–80% carbs. Protein is low. Healthy fats are missing. No omega-3.</p>
+      <p>That's why you feel hungry by 11am and your energy drops before lunch. Your breakfast just isn't complete.</p>
+      <p><strong style="color:#fff;">NUTRITOP fills that gap. One spoon. 30 seconds. Done.</strong></p>
+    </div>
+    <div class="oats-vs">
+      <div class="oats-vs-title">What your breakfast is actually missing</div>
+      <div class="ov-row">
+        <div class="ov-col bad">
+          <span class="label">Plain Oats Only</span>
+          <div class="ov-item">~70% carbohydrates</div>
+          <div class="ov-item">Low protein (~5g)</div>
+          <div class="ov-item">No healthy fats</div>
+          <div class="ov-item">Low omega-3</div>
+          <div class="ov-item highlight">Hungry by 11am ⚡</div>
+        </div>
+        <div class="ov-plus">+</div>
+        <div class="ov-col good">
+          <span class="label">+ NUTRITOP</span>
+          <div class="ov-item highlight">+6–8g protein</div>
+          <div class="ov-item highlight">Omega-3 from chia &amp; walnuts</div>
+          <div class="ov-item highlight">Magnesium for muscles</div>
+          <div class="ov-item highlight">Fibre for digestion</div>
+          <div class="ov-item highlight">Full until lunch ✓</div>
+        </div>
+      </div>
+      <div class="ov-result">= A balanced breakfast your body actually needed 🙌</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BENEFITS ── -->
+<section class="benefits" id="benefits">
+  <div class="section-tag reveal">What it actually does</div>
+  <div class="section-title reveal">5 real changes you'll <em>feel.</em></div>
+  <div class="benefits-grid reveal">
+    <div class="benefit-card">
+      <span class="bc-icon">⏱️</span>
+      <div class="bc-title">Stays Full Longer</div>
+      <div class="bc-body">Fibre from chia and flax slows digestion. Protein from almonds and cashews keeps hunger away. No more raiding the pantry at 11am.</div>
+      <div class="bc-proof">No more mid-morning hunger crash</div>
+    </div>
+    <div class="benefit-card">
+      <span class="bc-icon">💪</span>
+      <div class="bc-title">Muscle Recovery Support</div>
+      <div class="bc-body">Magnesium from roasted pumpkin seeds helps your muscles repair after a workout. Perfect for gym-goers who train in the morning.</div>
+      <div class="bc-proof">Great before or after the gym</div>
+    </div>
+    <div class="benefit-card">
+      <span class="bc-icon">🧠</span>
+      <div class="bc-title">Better Focus All Morning</div>
+      <div class="bc-body">Walnuts are one of the best plant sources of Omega-3 — directly linked to sharper memory and focus. Vitamin E from almonds supports long-term brain health.</div>
+      <div class="bc-proof">Think clearer through work or class</div>
+    </div>
+    <div class="benefit-card">
+      <span class="bc-icon">🌿</span>
+      <div class="bc-title">Better Digestion</div>
+      <div class="bc-body">Flax seeds have soluble fibre that feeds good gut bacteria. Chia seeds regulate digestion gently. Your gut will feel the difference in a week.</div>
+      <div class="bc-proof">Your gut will thank you in 7 days</div>
+    </div>
+    <div class="benefit-card">
+      <span class="bc-icon">⚖️</span>
+      <div class="bc-title">Balanced Breakfast, Finally</div>
+      <div class="bc-body">One spoon gives you protein from nuts, healthy fats from seeds, fibre, iron, zinc and magnesium. The balanced breakfast most people never actually get.</div>
+      <div class="bc-proof">The complete breakfast you always meant to eat</div>
+    </div>
+    <div class="benefit-card">
+      <span class="bc-icon">❤️</span>
+      <div class="bc-title">Heart &amp; Immunity Support</div>
+      <div class="bc-body">Healthy fats from walnuts and almonds support good cholesterol. Zinc from cashews boosts immunity. Natural iron from raisins fights daily fatigue.</div>
+      <div class="bc-proof">Long-term health built into a daily habit</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INGREDIENTS ── -->
+<section class="ingredients" id="ingredients">
+  <div class="ing-intro reveal">
+    <div>
+      <div class="section-tag">Inside every pack</div>
+      <div class="section-title" style="margin-bottom:20px;">9 ingredients. <em>Every gram earns its place.</em></div>
+      <p style="font-size:.95rem;line-height:1.85;color:var(--mocha);font-weight:300;margin-bottom:16px;">No cheap fillers. No padding. Every ingredient is chosen for a specific reason and measured precisely — crunchy roasted seeds, nutty dry fruits, with a light natural sweetness from raisins.</p>
+      <p style="font-size:.85rem;color:var(--muted);font-weight:300;">50g per pack. 5–6 servings of 8–10g each. No added sugar. No artificial additives.</p>
+      <img src="images/product-pack.jpeg" alt="NUTRITOP Product Pack" style="width:100%;max-width:340px;border-radius:8px;margin-top:20px;box-shadow:var(--shadow-md);">
+    </div>
+    <div>
+      <div style="background:var(--white);padding:28px;border-radius:4px;border:1.5px solid var(--border);">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;text-align:center;">Per 50g pack (approx.)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);">
+          <div style="background:var(--cream);padding:18px;text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--green);line-height:1;">~220</div><div style="font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px;">kcal</div></div>
+          <div style="background:var(--cream);padding:18px;text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--green);line-height:1;">6–8g</div><div style="font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px;">Protein</div></div>
+          <div style="background:var(--cream);padding:18px;text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--green);line-height:1;">4–6g</div><div style="font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px;">Fibre</div></div>
+          <div style="background:var(--cream);padding:18px;text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--green);line-height:1;">Zero</div><div style="font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px;">Added Sugar</div></div>
+        </div>
+        <div style="margin-top:14px;font-size:.72rem;color:var(--muted);text-align:center;">*Approximate values based on ingredient composition</div>
+      </div>
+    </div>
+  </div>
+  <div class="ing-cards reveal">
+    <div class="ing-card"><div class="ic-top"><div class="ic-gram">10<small>g</small></div><div class="ic-dot"></div></div><div class="ic-name">Almonds (Sliced)</div><div class="ic-benefit">Vitamin E, healthy fats, protein. Adds a satisfying crunch to every spoon.</div><span class="ic-tag">Brain · Skin</span></div>
+    <div class="ing-card"><div class="ic-top"><div class="ic-gram">8<small>g</small></div><div class="ic-dot"></div></div><div class="ic-name">Cashews</div><div class="ic-benefit">Rich in zinc and magnesium. Creamy, mild flavour that blends into any breakfast.</div><span class="ic-tag">Immunity</span></div>
+    <div class="ing-card"><div class="ic-top"><div class="ic-gram">7<small>g</small></div><div class="ic-dot"></div></div><div class="ic-name">Raisins</div><div class="ic-benefit">Natural iron and quick energy. The light natural sweetness — no added sugar needed.</div><span class="ic-tag">Iron · Energy</span></div>
+    <div class="ing-card"><div class="ic-top"><div class="ic-gram">6<small>g</small></div><div class="ic-dot"></div></div><div class="ic-name">Pumpkin Seeds (Roasted)</div><div class="ic-benefit">Best plant source of magnesium. Roasted for a warm, nutty aroma in every bite.</div><span class="ic-tag">Muscle Recovery</span></div>
+    <div class="ing-card"><div class="ic-top"><div class="ic-gram">4<small>g</small></div><div class="ic-dot"></div></div><div class="ic-name">Pistachios</div><div class="ic-benefit">High protein, low calorie. Adds a distinctive taste and antioxidants to the mix.</div><span class="ic-tag">Protein · Mood</span></div>
+    <div class="ing-card"><div class="ic-top"><div class="ic-gram">4<small>g</small></div><div class="ic-dot"></div></div><div class="ic-name">Walnuts</div><div class="ic-benefit">Best plant Omega-3 source. Linked to better memory, mood and heart health.</div><span class="ic-tag">Omega-3 · Brain</span></div>
+    <div class="ing-card"><div class="ic-top"><div class="ic-gram">4<small>g</small></div><div class="ic-dot"></div></div><div class="ic-name">Sunflower Seeds (Roasted)</div><div class="ic-benefit">Vitamin E and B vitamins. Light crunch, roasted aroma, great for skin and energy.</div><span class="ic-tag">Skin · Metabolism</span></div>
+    <div class="ing-card"><div class="ic-top"><div class="ic-gram">3<small>g</small></div><div class="ic-dot"></div></div><div class="ic-name">Flax Seeds (Crushed)</div><div class="ic-benefit">ALA Omega-3 and soluble fibre. Supports gut health and keeps you full longer.</div><span class="ic-tag">Gut Health</span></div>
+    <div class="ing-card"><div class="ic-top"><div class="ic-gram">2<small>g</small></div><div class="ic-dot"></div></div><div class="ic-name">Chia Seeds</div><div class="ic-benefit">Expands in milk or oats for extra fullness. High fibre and plant protein in every tiny seed.</div><span class="ic-tag">Fibre · Satiety</span></div>
+  </div>
+</section>
+
+<!-- ── VALUE COMPARISON ── -->
+<section class="value-section">
+  <div class="value-inner reveal">
+    <div class="value">
+      <div class="value-tag">The Smart Math</div>
+      <h2>Buying ingredients separately costs <em>3x more.</em></h2>
+      <p>Getting the same nuts, seeds and dry fruits separately from a Lucknow dry fruit shop costs ₹300+. Plus you have to measure, mix and store everything yourself.</p>
+      <p style="margin-top:16px;">NUTRITOP does all of that for ₹139. Pre-portioned. Pre-mixed. Ready to use. <strong style="color:#fff;">You're not buying a snack — you're buying a system.</strong></p>
+      <div class="protein-bar-line">💪 Better nutrition than most protein bars — at a fraction of the cost.</div>
+    </div>
+    <div>
+      <div class="price-table">
+        <div class="pt-head"><span>If Bought Separately</span><span>Qty</span><span>Cost</span></div>
+        <div class="pt-row"><span class="item">Almonds (sliced, quality)</span><span class="qty">100g</span><span class="price">₹85–100</span></div>
+        <div class="pt-row"><span class="item">Walnuts</span><span class="qty">100g</span><span class="price">₹90–110</span></div>
+        <div class="pt-row"><span class="item">Chia Seeds</span><span class="qty">100g</span><span class="price">₹60–80</span></div>
+        <div class="pt-row"><span class="item">Pumpkin Seeds (roasted)</span><span class="qty">100g</span><span class="price">₹55–70</span></div>
+        <div class="pt-row"><span class="item">Flax + Sunflower Seeds</span><span class="qty">100g each</span><span class="price">₹60–80</span></div>
+        <div class="pt-total"><span class="item">Total (still need to mix it yourself)</span><span></span><span class="price">₹350–440</span></div>
+      </div>
+      <div class="pt-vs">
+        <div><div class="label">NUTRITOP — ready to use, perfectly portioned</div><div class="val">₹139</div></div>
+        <div class="save">You save ₹200+</div>
+      </div>
+      <div class="per-serving-callout">That's just <strong>₹19–23 per breakfast.</strong> Less than a samosa. 🥲</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MEAL VISUALS ── -->
+<section class="meals">
+  <div class="section-tag reveal">Works on anything</div>
+  <div class="section-title reveal">Your <em>current breakfast,</em> upgraded.</div>
+  <p class="reveal" style="font-size:.95rem;color:var(--mocha);font-weight:300;max-width:500px;margin-top:14px;line-height:1.8;">1–2 spoons. Sprinkle on top. Done. Crunchy, nutty, with a light natural sweetness. Works on oats, cornflakes, dahi, warm milk — anything.</p>
+  <div class="meals-grid reveal">
+    <div class="meal-card big">
+      <img src="images/ad-bowl.jpeg" alt="NUTRITOP bowl with nuts and seeds">
+      <div class="meal-card-overlay"></div>
+      <div class="meal-info"><div class="meal-name">Oats Bowl — The Classic</div><div class="meal-tag">Most popular · Crunchy nutty texture</div></div>
+      <div class="meal-badge">⭐ Most Popular</div>
+    </div>
+    <div class="meal-card">
+      <img src="images/ad-spoon.jpeg" alt="Fix your breakfast in 1 spoon">
+      <div class="meal-card-overlay"></div>
+      <div class="meal-info"><div class="meal-name">One Spoon Magic</div><div class="meal-tag">Fix your breakfast · Just 1 spoon</div></div>
+    </div>
+    <div class="meal-card">
+      <img src="images/bowl.png" alt="NUTRITOP seeds and nuts bowl">
+      <div class="meal-card-overlay"></div>
+      <div class="meal-info"><div class="meal-name">Seeds &amp; Nuts Bowl</div><div class="meal-tag">High protein · Post workout</div></div>
+    </div>
+    <div class="meal-card">
+      <img src="images/product-pack.jpeg" alt="NUTRITOP Product Pack">
+      <div class="meal-card-overlay"></div>
+      <div class="meal-info"><div class="meal-name">The NUTRITOP Pack</div><div class="meal-tag">50g · 9 ingredients · Ready to use</div></div>
+    </div>
+    <div class="meal-card">
+      <img src="images/ad-bowl.jpeg" alt="Complete breakfast with NUTRITOP">
+      <div class="meal-card-overlay"></div>
+      <div class="meal-info"><div class="meal-name">Breakfast Upgrade</div><div class="meal-tag">Everyday upgrade · Sprinkle on top</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHO IS THIS FOR ── -->
+<section class="whofor">
+  <div class="section-tag reveal">Made for real people</div>
+  <div class="section-title reveal">This is for <em>you,</em> if…</div>
+  <div class="persona-grid reveal">
+    <div class="persona">
+      <span class="persona-icon">🏋️</span>
+      <h3>You Hit the Gym</h3>
+      <p>Your breakfast should match your effort. NUTRITOP gives magnesium for recovery, protein for muscle and Omega-3 to reduce inflammation.</p>
+      <span class="persona-tag">Gym &amp; Fitness</span>
+    </div>
+    <div class="persona">
+      <span class="persona-icon">💼</span>
+      <h3>You're Always Rushing</h3>
+      <p>30 seconds is all it takes. No prep, no measuring. Add to whatever you eat and you're covered — even on the craziest mornings.</p>
+      <span class="persona-tag">Busy Professionals</span>
+    </div>
+    <div class="persona">
+      <span class="persona-icon">📚</span>
+      <h3>You're a Student</h3>
+      <p>Skipping breakfast or surviving on biscuits? One spoon in dahi or oats gives your brain what it needs for focus through lectures and exams.</p>
+      <span class="persona-tag">Students</span>
+    </div>
+    <div class="persona">
+      <span class="persona-icon">👨‍👩‍👧</span>
+      <h3>You Feed a Family</h3>
+      <p>Works for every age — kids for brain development, adults for energy, seniors for heart and bone health. One product for the whole family.</p>
+      <span class="persona-tag">Families</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── TRUST ── -->
+<section class="trust">
+  <div class="section-tag reveal">Why trust us</div>
+  <div class="section-title reveal">Built on <em>real promises.</em></div>
+  <div class="trust-grid reveal">
+    <div class="trust-item">
+      <span class="ti-icon">🏭</span>
+      <div class="ti-title">Made in Lucknow</div>
+      <div class="ti-sub">Local product, local pride. Packed and made right here in Lucknow — not imported, not factory-mass-produced.</div>
+    </div>
+    <div class="trust-item">
+      <span class="ti-icon">📅</span>
+      <div class="ti-title">Freshly Packed Every Week</div>
+      <div class="ti-sub">Small batches roasted weekly so you always get fresh product. Never sitting in a warehouse for months.</div>
+    </div>
+    <div class="trust-item">
+      <span class="ti-icon">🚫</span>
+      <div class="ti-title">Zero Added Sugar</div>
+      <div class="ti-sub">Sweetness comes only from raisins — natural and mild. No syrup, no jaggery, no artificial anything.</div>
+    </div>
+    <div class="trust-item">
+      <span class="ti-icon">💵</span>
+      <div class="ti-title">Pay on Delivery</div>
+      <div class="ti-sub">No online payment needed. You pay only when the product reaches your door — cash or UPI.</div>
+    </div>
+    <div class="trust-item">
+      <span class="ti-icon">🔄</span>
+      <div class="ti-title">Money-Back Guarantee</div>
+      <div class="ti-sub">Don't like it? Any reason at all — taste, texture, freshness. WhatsApp us and we refund. No questions.</div>
+    </div>
+  </div>
+  <div class="hindi-trust reveal">
+    "Healthy breakfast ab mushkil nahi."
+    <span>Good nutrition doesn't have to be complicated — one spoon is all it takes.</span>
+  </div>
+</section>
+
+<!-- ── SOCIAL PROOF ── -->
+<section class="social-proof">
+  <div class="section-tag reveal">Early customers say</div>
+  <div class="section-title reveal">Real people. <em>Real breakfasts.</em></div>
+  <div class="reviews-grid reveal">
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <div class="review-text">"Been adding this to my oats every morning for 3 weeks. I genuinely don't feel hungry till 1pm now. The crunchy texture and roasted aroma makes breakfast actually enjoyable."</div>
+      <div class="reviewer"><div class="reviewer-avatar">💪</div><div><div class="reviewer-name">Rahul S.</div><div class="reviewer-meta">Gym-goer · Gomti Nagar, Lucknow</div></div></div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <div class="review-text">"I bought it for my kids. My 12-year-old now asks for 'the crunchy topping' every morning. The nutty taste and light sweetness — kids love it. And I feel good about what they're eating."</div>
+      <div class="reviewer"><div class="reviewer-avatar">👩‍👧</div><div><div class="reviewer-name">Priya M.</div><div class="reviewer-meta">Mother of two · Aliganj, Lucknow</div></div></div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <div class="review-text">"Used to skip breakfast every day. Now I just throw this on dahi and go. Taste is great — not too sweet, not too bland. Already on my third pack. It became a habit without trying."</div>
+      <div class="reviewer"><div class="reviewer-avatar">🎓</div><div><div class="reviewer-name">Ananya K.</div><div class="reviewer-meta">MBA Student · Hazratganj, Lucknow</div></div></div>
+    </div>
+  </div>
+  <div class="proof-placeholder reveal">
+    📸 Share your NUTRITOP breakfast on Instagram — tag us to be featured here!
+  </div>
+</section>
+
+<!-- ── REPEAT PURCHASE SECTION (NEW — before pricing) ── -->
+<section class="repeat-section">
+  <div class="repeat-inner reveal">
+    <div class="repeat-tag">Why people come back</div>
+    <h2>Once you start, <em>you won't stop.</em></h2>
+    <p>Building a breakfast habit is hard. NUTRITOP makes it effortless — it fits into what you already eat. That's why most customers reorder within a week.</p>
+    <div class="repeat-stats">
+      <div class="rs-item">
+        <span class="rs-num">87</span>
+        <span class="rs-label">Packs delivered in Lucknow so far</span>
+      </div>
+      <div class="rs-item">
+        <span class="rs-num">7 days</span>
+        <span class="rs-label">Average time to first reorder</span>
+      </div>
+      <div class="rs-item">
+        <span class="rs-num">₹19</span>
+        <span class="rs-label">Cost per breakfast — less than a samosa</span>
+      </div>
+    </div>
+    <div class="repeat-cta-row">
+      <a href="https://wa.me/918127240991?text=Hi%20I%20want%20Trial%20Pack%20%E2%82%B999" target="_blank" class="btn-primary">📱 Start With a Trial Pack — ₹99</a>
+      <a href="https://wa.me/918127240991?text=Hi%20I%20want%203%20Pack%20Bundle%20%E2%82%B9249" target="_blank" class="btn-secondary" style="color:#fff;border-color:rgba(255,255,255,.3);">Get the 3-Pack Bundle →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── ORDER ON WHATSAPP CTA BLOCK ── -->
+<section class="wa-cta-block">
+  <div class="reveal">
+    <img src="images/logo.jpeg" alt="NUTRITOP" style="width:70px;height:70px;border-radius:50%;object-fit:cover;margin:0 auto 18px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.2);">
+    <h3>Order on WhatsApp — Fastest Way to Order 💬</h3>
+    <p>No forms. No checkout. No online payment. Just tap below, send a message, and we deliver to your door.</p>
+    <a href="https://wa.me/918127240991?text=Hi%20I%20want%20Trial%20Pack%20%E2%82%B999" target="_blank" class="btn-wa-big">💬 Order Trial Pack — ₹99 on WhatsApp</a>
+    <!-- UPDATED wa-sub-note -->
+    <div class="wa-sub-note">Free delivery in Lucknow &nbsp;·&nbsp; Pay on delivery &nbsp;·&nbsp; Delivered within 24 hours</div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="pricing" id="pricing">
+  <div class="section-tag reveal">Simple pricing</div>
+  <div class="section-title reveal">Start with a trial. <em>Stay for life.</em></div>
+
+  <div class="urgency-strip reveal">
+    <div class="us-left">
+      <div class="us-dot"></div>
+      <div class="us-text">🚀 Lucknow Launch Batch — <em>Only <span id="pricingSpots">43</span> Trial Packs left.</em> Next batch ships after 10 days.</div>
+    </div>
+    <div class="us-timer" id="countdown">Loading...</div>
+  </div>
+
+  <div class="pricing-cards reveal">
+    <!-- Trial -->
+    <div class="p-card">
+      <div class="p-tier">Just Try It First</div>
+      <div class="p-scratch">MRP ₹139</div>
+      <div class="p-price"><span class="cents">₹</span>99</div>
+      <div class="p-per">50g · 5–6 servings · approx. 1 week</div>
+      <div class="p-smart">= Just ₹19 per breakfast · Less than a samosa</div>
+      <ul class="p-list">
+        <li>All 9 ingredients, full formula</li>
+        <li>Crunchy, nutty, light natural sweetness</li>
+        <li>Free delivery in Lucknow</li>
+        <li>Pay on delivery — zero risk</li>
+        <!-- NEW bullet in Trial Pack -->
+        <li>Most customers reorder within 7 days</li>
+      </ul>
+      <a href="https://wa.me/918127240991?text=Hi%20I%20want%20Trial%20Pack%20%E2%82%B999" target="_blank" class="btn-primary" style="width:100%;justify-content:center;">📱 Try 3 Breakfasts for ₹99</a>
+    </div>
+
+    <!-- Best Value — HERO -->
+    <div class="p-card hero-card">
+      <div class="p-badge">⭐ Most Popular</div>
+      <div class="p-tier">Best Value</div>
+      <div class="p-scratch" style="color:rgba(255,255,255,.35);">Worth ₹417</div>
+      <div class="p-price"><span class="cents">₹</span>249</div>
+      <div class="p-per">3 packs · 50g each · 3-week supply</div>
+      <div class="p-smart" style="background:rgba(232,93,32,.25);color:#ffb38a;">You save ₹168 vs buying separately</div>
+      <ul class="p-list">
+        <li>3 × 50g packs — full formula</li>
+        <li>15–18 servings total</li>
+        <li>Enough to build a real habit</li>
+        <li>Priority WhatsApp delivery</li>
+        <li>Share a pack with the family</li>
+      </ul>
+      <a href="https://wa.me/918127240991?text=Hi%20I%20want%203%20Pack%20Bundle%20%E2%82%B9249" target="_blank" class="btn-primary" style="width:100%;justify-content:center;background:var(--gold);color:var(--brown);">📱 Order 3-Pack Bundle</a>
+    </div>
+
+    <!-- Premium -->
+    <div class="p-card">
+      <div class="p-tier">Premium Upgrade</div>
+      <div class="p-scratch">MRP ₹169</div>
+      <div class="p-price"><span class="cents">₹</span>139</div>
+      <div class="p-per">50g · Upgraded formula · Richer taste</div>
+      <div class="p-smart">= ₹23 per breakfast · More nutrition</div>
+      <ul class="p-list">
+        <li>All 9 core ingredients</li>
+        <li>+ Dry Figs for deeper sweetness</li>
+        <li>+ Apricots for extra minerals</li>
+        <li>Richer flavour, more nutrients</li>
+        <li>Free delivery in Lucknow</li>
+      </ul>
+      <a href="https://wa.me/918127240991?text=Hi%20I%20want%20Premium%20Pack%20%E2%82%B9139" target="_blank" class="btn-secondary" style="width:100%;justify-content:center;">📱 Order Premium Pack</a>
+    </div>
+  </div>
+
+  <div class="habit-line reveal">
+    💡 Use daily for 7 days — feel the difference. Your body will tell you.
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq">
+  <div class="section-tag reveal">Common questions</div>
+  <div class="section-title reveal">You might be <em>wondering…</em></div>
+  <div class="faq-grid reveal">
+    <div class="faq-item">
+      <div class="faq-q">How much should I use per serving? <span class="faq-icon">+</span></div>
+      <div class="faq-a"><p>1 to 2 tablespoons (roughly 8–10g) is ideal. Start with 1 spoon. A 50g pack gives you 5–6 servings — about one per day for a week.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can kids eat this? <span class="faq-icon">+</span></div>
+      <div class="faq-a"><p>Yes. All ingredients are whole natural foods — almonds, cashews, raisins, seeds. No added sugar, no artificial anything. Great for school-going kids. Start with half a spoon for very young children.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is there any added sugar or preservatives? <span class="faq-icon">+</span></div>
+      <div class="faq-a"><p>Zero added sugar. Zero preservatives. Zero artificial flavours or colours. The mild sweetness comes only from the raisins. Clean, simple ingredients.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What does it taste like? <span class="faq-icon">+</span></div>
+      <div class="faq-a"><p>Crunchy and nutty with a warm roasted aroma from the seeds, and a light natural sweetness from raisins. Not overpowering — it blends beautifully with oats, dahi and milk.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do I order? <span class="faq-icon">+</span></div>
+      <div class="faq-a"><p>Just tap any WhatsApp button on this page. A message is pre-filled for you — just send it. We confirm your order and deliver. Pay on delivery — cash or UPI. Simple as that.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is delivery free? Which areas? <span class="faq-icon">+</span></div>
+      <div class="faq-a"><p>Free delivery across Lucknow. We cover Gomti Nagar, Hazratganj, Aliganj, Indira Nagar, Alambagh, Rajajipuram, Mahanagar and surrounding areas. Delivered within 24 hours of order confirmation.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What if I don't like it? <span class="faq-icon">+</span></div>
+      <div class="faq-a"><p>Full money-back guarantee. If you're not happy for any reason — taste, texture, freshness — WhatsApp us and we refund you. No forms, no arguments. We stand behind the product fully.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How long does one pack last? <span class="faq-icon">+</span></div>
+      <div class="faq-a"><p>A 50g pack gives 5–6 servings — roughly one week using 1–2 spoons daily. Store in a cool, dry place. Stays fresh for 3–4 weeks after opening. The 3-pack bundle covers about a month.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ORDER FORM ── -->
+<section class="order-form-section" id="order">
+  <div class="order-wrap reveal">
+    <div class="order-left">
+      <div class="section-tag" style="margin-bottom:16px;">Reserve your pack</div>
+      <h2>Order Now.<br><em>Choose Online Payment or COD.</em></h2>
+      <p>Secure checkout with Razorpay or quick Cash on Delivery. Fill this form, place order instantly, and get a tracking ID in seconds.</p>
+      <div class="trust-list">
+        <div class="tl-item"><span class="tl-icon">🔒</span><span><strong>Secure payment</strong> via Razorpay</span></div>
+        <div class="tl-item"><span class="tl-icon">💵</span><span><strong>Cash on Delivery</strong> also available</span></div>
+        <div class="tl-item"><span class="tl-icon">📦</span><span>Instant order ID for <strong>tracking</strong></span></div>
+        <div class="tl-item"><span class="tl-icon">💬</span><span>Order confirmation sent via <strong>webhook/WhatsApp</strong></span></div>
+        <div class="tl-item"><span class="tl-icon">⚡</span><span><strong>Fast checkout</strong> optimized for mobile</span></div>
+      </div>
+    </div>
+    <div>
+      <form class="o-form" id="orderForm">
+        <div class="o-row">
+          <input type="text" class="o-input" id="oName" placeholder="Your name" required>
+          <input type="tel" class="o-input" id="oPhone" placeholder="WhatsApp number" maxlength="10" required>
+        </div>
+        <textarea class="o-input" id="oAddress" placeholder="Full delivery address" rows="3" required style="width:100%;resize:vertical;"></textarea>
+        <input type="text" class="o-input" id="oCouponCode" placeholder="Coupon / Referrer Code (optional)">
+
+        <input type="hidden" id="selectedProduct" value="3 Pack Combo - ₹249" required>
+        <div class="product-grid" aria-label="Choose Product Pack">
+          <article class="product-card" tabindex="0" role="button" aria-pressed="false" data-product="Trial Pack - ₹99" data-helper="Try 5 breakfasts for ₹99.">
+            <img src="images/product-pack.jpeg" alt="Trial Pack" onerror="this.onerror=null;this.src='images/logo.jpeg';">
+            <div class="pc-title">Trial Pack – ₹99</div>
+            <div class="pc-detail">5–6 servings (50g)</div>
+            <div class="pc-tag">Try Before You Commit</div>
+            <div class="pc-note">+ ₹30 delivery</div>
+          </article>
+          <article class="product-card selected" tabindex="0" role="button" aria-pressed="true" data-product="3 Pack Combo - ₹249" data-helper="Most people choose ₹249 combo.">
+            <span class="pc-badge">Most Popular</span>
+            <img src="images/ad-bowl.jpeg" alt="Best Seller Combo" onerror="this.onerror=null;this.src='images/product-pack.jpeg';">
+            <div class="pc-title">3 Pack Combo – ₹249</div>
+            <div class="pc-detail">3 × 50g packs</div>
+            <div class="pc-tag">Most Popular</div>
+            <div class="pc-note" style="color:var(--green);">FREE delivery</div>
+          </article>
+          <article class="product-card" tabindex="0" role="button" aria-pressed="false" data-product="Mega Pack - ₹399" data-helper="Save ₹100 with Mega Pack.">
+            <span class="pc-badge">20% OFF</span>
+            <img src="images/ad-spoon.jpeg" alt="Value Mega Pack" onerror="this.onerror=null;this.src='images/product-pack.jpeg';">
+            <div class="pc-title">Mega Pack – ₹399 <span class="pc-old">₹499</span></div>
+            <div class="pc-detail">250g pack</div>
+            <div class="pc-tag">Best Value</div>
+            <div class="pc-note" style="color:var(--green);">FREE delivery</div>
+          </article>
+        </div>
+
+        <div class="delivery-note">Delivery logic: Trial ₹99 → +₹30 delivery. ₹249 & ₹399 packs → FREE delivery.</div>
+        <div class="urgency-mini">⚡ Limited batch today — complete checkout before stock closes.</div>
+        <div class="checkout-actions">
+          <button type="button" id="payNowBtn" class="btn-primary" style="width:100%;justify-content:center;padding:16px;font-size:.85rem;">
+            Buy Now
+          </button>
+          <button type="button" id="codBtn" class="btn-secondary" style="width:100%;justify-content:center;padding:16px;font-size:.85rem;">
+            Cash on Delivery
+          </button>
+        </div>
+
+        <p class="o-note" id="formStatus" role="status" aria-live="polite">Choose payment method to place your order.</p>
+      </form>
+      <div class="success-msg" id="successMsg">
+        <h3>🎉 Order Confirmed!</h3>
+        <p id="successText">Your order has been placed successfully.</p>
+        <div class="success-order-id"><span>Order ID: <code id="successOrderId">-</code></span><button type="button" id="copyOrderIdBtn" class="btn-secondary" style="padding:8px 12px;">Copy ID</button></div>
+        <p style="margin-top:10px;"><a href="/track.html" class="btn-secondary" style="padding:10px 16px;display:inline-flex;">Track Your Order</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<section class="final-cta">
+  <div class="section-tag">One last thing</div>
+  <h2>
+    Your breakfast<br>
+    deserves better than <em>just carbs.</em>
+  </h2>
+  <p>₹99. 5 better breakfasts. Free delivery. Pay when it arrives. Use daily for 7 days — feel the difference.</p>
+  <div class="final-actions">
+    <a href="#order" class="btn-big orange">🛒 Buy Now - ₹99</a>
+    <a href="#order" class="btn-big">💵 Choose COD</a>
+  </div>
+  <div class="final-guarantee">🔄 Money-back guarantee &nbsp;·&nbsp; Free delivery &nbsp;·&nbsp; Pay on delivery</div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <a href="#" class="footer-logo"><img src="images/logo.jpeg" alt="NUTRITOP Logo" class="footer-logo-img"> NUTRITOP<sup>®</sup></a>
+    <div class="footer-text">
+      <div>Made fresh in Lucknow, Uttar Pradesh, India</div>
+      <div style="margin-top:4px;">WhatsApp: +91 81272 40991 &nbsp;·&nbsp; Made with 🌿 in UP</div>
+    </div>
+    <div class="footer-trust">
+      <span class="ft-badge">🚫 No Added Sugar</span>
+      <span class="ft-badge">🏭 Lucknow-Made</span>
+      <span class="ft-badge">💵 Pay on Delivery</span>
+      <span class="ft-badge">🔄 Money-Back</span>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-legal">
+      <div>Brand Created by <strong style="color:rgba(255,255,255,.5);">Shrey Mishra</strong></div>
+      <!-- UPDATED: Added FSSAI + compliance line after founder credit -->
+      <div style="margin-top:2px;">FSSAI Compliant &nbsp;·&nbsp; All ingredients are food-grade &amp; safe for consumption</div>
+      <div style="margin-top:2px;">Manufactured by <strong style="color:rgba(255,255,255,.5);">Mandavi Foods, Uttar Pradesh</strong></div>
+    </div>
+    <div class="footer-legal" style="text-align:right;">
+      <div>© 2025 NUTRITOP. All rights reserved.</div>
+      <div style="margin-top:2px;">Freshly Packed Every Week · Small Batches Only</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ── STICKY WA ── -->
+<div class="wa-sticky">
+  <div class="wa-bubble">Quick Checkout 👇</div>
+  <a class="wa-btn" href="#order" title="Go to checkout">🛒</a>
+</div>
+
+<script>
+// ── Scroll Reveal
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('up'), i * 90);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => io.observe(el));
+
+// ── FAQ Accordion
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// ── Scarcity Counter
+let spots = 43 - Math.floor(Math.random() * 8);
+const scEl = document.getElementById('spotsLeft');
+const psEl = document.getElementById('pricingSpots');
+function updateSpots() {
+  if (scEl) scEl.textContent = `Only ${spots} Packs Left`;
+  if (psEl) psEl.textContent = spots;
+}
+updateSpots();
+setInterval(() => {
+  if (spots > 8 && Math.random() > 0.65) { spots--; updateSpots(); }
+}, 55000);
+
+// ── Countdown Timer
+function updateCountdown() {
+  const el = document.getElementById('countdown');
+  if (!el) return;
+  const now = new Date();
+  const end = new Date();
+  end.setHours(23, 59, 59, 0);
+  const diff = end - now;
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  el.textContent = `Offer ends in ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+<script src="/js/order.js" defer></script>
+</body>
+</html>
