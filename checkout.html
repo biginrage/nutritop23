@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUTRITOP – Checkout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:      #1A6B3C;
+  --green-mid:  #228B50;
+  --green-lt:   #E8F5EE;
+  --green-glow: rgba(26,107,60,0.15);
+  --orange:     #E85D20;
+  --orange-lt:  #FFF1EB;
+  --gold:       #C9890A;
+  --gold-lt:    #FFF8E6;
+  --cream:      #FDFAF4;
+  --paper:      #F5F0E8;
+  --brown:      #3D2608;
+  --mocha:      #7A5030;
+  --muted:      #9A8470;
+  --text:       #1E1408;
+  --white:      #FFFFFF;
+  --border:     rgba(61,38,8,0.1);
+  --shadow-sm:  0 2px 12px rgba(61,38,8,0.08);
+  --shadow-md:  0 8px 32px rgba(61,38,8,0.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;line-height:1.6;min-height:100vh;}
+img{display:block;max-width:100%;}
+
+/* ── NAV ── */
+.nav{background:var(--white);border-bottom:1px solid var(--border);padding:14px 7vw;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;color:var(--brown);}
+.nav-logo img{width:36px;height:36px;border-radius:50%;object-fit:cover;}
+.nav-back{font-size:.8rem;color:var(--mocha);text-decoration:none;font-weight:600;letter-spacing:.5px;}
+.nav-back:hover{color:var(--green);}
+
+/* ── LAYOUT ── */
+.checkout-page{max-width:960px;margin:0 auto;padding:48px 5vw 80px;}
+.checkout-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:start;}
+
+/* ── LEFT: SUMMARY ── */
+.summary-box{background:var(--white);border:1.5px solid var(--border);border-radius:4px;padding:32px;box-shadow:var(--shadow-sm);}
+.summary-box h2{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:800;color:var(--brown);margin-bottom:6px;}
+.summary-box h2 em{font-style:italic;color:var(--green);}
+.summary-sub{font-size:.85rem;color:var(--mocha);margin-bottom:24px;}
+.selected-product-display{background:var(--green-lt);border:1.5px solid rgba(26,107,60,.2);border-radius:8px;padding:18px;margin-bottom:20px;}
+.spd-label{font-size:.7rem;font-weight:700;letter-spacing:1px;color:var(--green);text-transform:uppercase;margin-bottom:6px;}
+.spd-name{font-size:1.1rem;font-weight:800;color:var(--brown);}
+.spd-price{font-size:1.5rem;font-weight:800;color:var(--green);margin-top:4px;}
+.spd-mrp{font-size:.8rem;color:var(--muted);text-decoration:line-through;margin-left:6px;}
+.change-product{display:inline-block;margin-top:8px;font-size:.75rem;color:var(--green);cursor:pointer;font-weight:600;text-decoration:underline;}
+
+.product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+.product-card{border:1.5px solid var(--border);border-radius:10px;padding:10px;background:#fff;cursor:pointer;transition:all .2s;position:relative;}
+.product-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);}
+.product-card.selected{border-color:var(--green);box-shadow:0 10px 24px rgba(26,107,60,.16);transform:scale(1.01);}
+.product-card img{width:100%;height:90px;object-fit:cover;border-radius:6px;background:var(--paper);}
+.pc-title{font-weight:800;color:var(--brown);font-size:.82rem;margin-top:8px;}
+.pc-detail{font-size:.72rem;color:var(--mocha);}
+.pc-tag{display:inline-block;margin-top:5px;font-size:.62rem;font-weight:700;letter-spacing:.8px;background:var(--green-lt);color:var(--green);padding:3px 7px;border-radius:999px;}
+.pc-note{font-size:.68rem;color:var(--orange);margin-top:5px;font-weight:700;}
+.pc-old{font-size:.7rem;color:var(--muted);text-decoration:line-through;margin-left:4px;}
+.pc-badge{position:absolute;top:6px;right:6px;background:var(--orange);color:#fff;font-size:.56rem;font-weight:700;padding:3px 5px;border-radius:5px;}
+
+.trust-list{display:flex;flex-direction:column;gap:10px;margin-top:20px;}
+.tl-item{display:flex;align-items:center;gap:10px;font-size:.82rem;color:var(--mocha);}
+.tl-icon{font-size:1rem;}
+.tl-item strong{color:var(--green);}
+
+/* ── RIGHT: FORM ── */
+.form-box{background:var(--white);border:1.5px solid var(--border);border-radius:4px;padding:32px;box-shadow:var(--shadow-sm);}
+.form-box h3{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;color:var(--brown);margin-bottom:18px;}
+.o-form{display:flex;flex-direction:column;gap:14px;}
+.o-input{background:var(--cream);border:1.5px solid var(--border);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.92rem;font-weight:400;padding:14px 16px;outline:none;width:100%;border-radius:3px;transition:border-color .2s;}
+.o-input::placeholder{color:var(--muted);}
+.o-input:focus{border-color:var(--green);background:var(--white);}
+.o-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+textarea.o-input{resize:vertical;}
+
+.delivery-note{font-size:.75rem;color:var(--mocha);background:var(--cream);padding:9px 12px;border:1px dashed rgba(61,38,8,.2);border-radius:6px;}
+.urgency-mini{background:var(--orange-lt);border:1px solid rgba(232,93,32,.25);padding:8px 12px;border-radius:6px;font-size:.78rem;color:var(--brown);font-weight:600;}
+
+.checkout-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:16px 24px;text-decoration:none;border:none;cursor:pointer;border-radius:3px;transition:all .25s;box-shadow:0 4px 20px var(--green-glow);width:100%;}
+.btn-primary:hover{background:var(--green-mid);transform:translateY(-2px);}
+.btn-secondary{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;color:var(--brown);font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:16px 20px;text-decoration:none;border:1.5px solid var(--border);border-radius:3px;cursor:pointer;transition:all .2s;width:100%;}
+.btn-secondary:hover{border-color:var(--green);color:var(--green);}
+.btn-primary:disabled,.btn-secondary:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+.o-note{font-size:.75rem;color:var(--muted);text-align:center;margin-top:4px;}
+
+.success-msg{display:none;background:var(--green-lt);border:1.5px solid rgba(26,107,60,.3);padding:28px;border-radius:3px;text-align:center;}
+.success-msg h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--green);margin-bottom:8px;}
+.success-msg p{font-size:.88rem;color:var(--mocha);}
+.success-order-id{margin-top:10px;background:var(--white);padding:10px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.success-order-id code{font-weight:700;color:var(--green);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){
+  .checkout-grid{grid-template-columns:1fr;gap:24px;}
+  .checkout-page{padding:24px 4vw 60px;}
+  .product-grid{grid-template-columns:1fr;}
+  .o-row{grid-template-columns:1fr;}
+  .checkout-actions{grid-template-columns:1fr;}
+  .summary-box,.form-box{padding:22px 18px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="images/logo.jpeg" alt="NUTRITOP">
+    NUTRITOP<sup style="font-size:.6em;">®</sup>
+  </a>
+  <a href="/" class="nav-back">← Back to site</a>
+</nav>
+
+<div class="checkout-page">
+  <div class="checkout-grid">
+
+    <!-- LEFT: Product selection + trust -->
+    <div class="summary-box">
+      <h2>Order <em>NUTRITOP</em></h2>
+      <p class="summary-sub">Free delivery in Lucknow · Pay online or on delivery</p>
+
+      <div class="product-grid" aria-label="Choose Product Pack">
+        <article class="product-card" tabindex="0" role="button" aria-pressed="false" data-product="Trial Pack - ₹99" data-price="99" data-key="trial" data-helper="Try 5–6 breakfasts for ₹99.">
+          <img src="images/product-pack.jpeg" alt="Trial Pack" onerror="this.onerror=null;this.src='images/logo.jpeg';">
+          <div class="pc-title">Trial Pack – ₹99</div>
+          <div class="pc-detail">5–6 servings (50g)</div>
+          <div class="pc-tag">Try Before You Commit</div>
+          <div class="pc-note">+ ₹30 delivery</div>
+        </article>
+        <article class="product-card" tabindex="0" role="button" aria-pressed="false" data-product="3 Pack Combo - ₹249" data-price="249" data-key="bundle" data-helper="2–3 weeks of better mornings.">
+          <span class="pc-badge">Best Value</span>
+          <img src="images/ad-bowl.jpeg" alt="3 Pack Bundle" onerror="this.onerror=null;this.src='images/product-pack.jpeg';">
+          <div class="pc-title">3 Pack Combo – ₹249</div>
+          <div class="pc-detail">3 × 50g packs</div>
+          <div class="pc-tag">2–3 weeks supply</div>
+          <div class="pc-note" style="color:var(--green);">FREE delivery</div>
+        </article>
+        <article class="product-card" tabindex="0" role="button" aria-pressed="false" data-product="Mega Pack - ₹399" data-price="399" data-key="mega" data-helper="Best value — 3–4 weeks supply.">
+          <span class="pc-badge">Most Popular</span>
+          <img src="images/ad-spoon.jpeg" alt="250g Value Pack" onerror="this.onerror=null;this.src='images/product-pack.jpeg';">
+          <div class="pc-title">250g Value Pack – ₹399 <span class="pc-old">₹499</span></div>
+          <div class="pc-detail">250g · 25–30 servings</div>
+          <div class="pc-tag">Best Value</div>
+          <div class="pc-note" style="color:var(--green);">FREE delivery</div>
+        </article>
+      </div>
+
+      <div class="trust-list">
+        <div class="tl-item"><span class="tl-icon">🔒</span><span><strong>Secure payment</strong> via Razorpay</span></div>
+        <div class="tl-item"><span class="tl-icon">💵</span><span><strong>Cash on Delivery</strong> also available</span></div>
+        <div class="tl-item"><span class="tl-icon">📦</span><span>Instant order ID for <strong>tracking</strong></span></div>
+        <div class="tl-item"><span class="tl-icon">🚚</span><span><strong>Free delivery</strong> on ₹249 & ₹399 orders</span></div>
+        <div class="tl-item"><span class="tl-icon">⚡</span><span>Delivered within <strong>24 hours</strong> in Lucknow</span></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Order form -->
+    <div class="form-box">
+      <h3>Your Details</h3>
+      <form class="o-form" id="orderForm">
+        <div class="o-row">
+          <input type="text" class="o-input" id="oName" placeholder="Your name" required>
+          <input type="tel" class="o-input" id="oPhone" placeholder="WhatsApp number" maxlength="10" required>
+        </div>
+        <textarea class="o-input" id="oAddress" placeholder="Full delivery address" rows="3" required></textarea>
+        <input type="text" class="o-input" id="oCouponCode" placeholder="Coupon / Influencer Code (optional)">
+        <input type="hidden" id="selectedProduct" value="">
+
+        <div class="delivery-note">Trial ₹99 → +₹30 delivery &nbsp;·&nbsp; ₹249 &amp; ₹399 → FREE delivery</div>
+        <div class="urgency-mini">⚡ Limited batch — complete checkout before stock closes.</div>
+
+        <div class="checkout-actions">
+          <button type="button" id="payNowBtn" class="btn-primary">🔒 Pay Online</button>
+          <button type="button" id="codBtn" class="btn-secondary">💵 Cash on Delivery</button>
+        </div>
+        <p class="o-note" id="formStatus" role="status" aria-live="polite">Select a pack above, then choose payment.</p>
+      </form>
+
+      <div class="success-msg" id="successMsg">
+        <h3>🎉 Order Confirmed!</h3>
+        <p id="successText">Your order has been placed successfully.</p>
+        <div class="success-order-id">
+          <span>Order ID: <code id="successOrderId">-</code></span>
+          <button type="button" id="copyOrderIdBtn" class="btn-secondary" style="padding:8px 12px;width:auto;">Copy ID</button>
+        </div>
+        <p style="margin-top:14px;"><a href="/track.html" class="btn-secondary" style="display:inline-flex;width:auto;padding:10px 16px;">Track Your Order</a></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Google Forms integration
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScitYhW6eHwJLcmTkhyiIidhXxFJw2wx9qG7SEP2CgtyDZ_lw/formResponse";
+function sendOrder(d) {
+  const f = new FormData();
+  f.append("entry.1213099713", d.name);
+  f.append("entry.1032424383", d.phone);
+  f.append("entry.1941968398", d.product);
+  f.append("entry.271094336", d.amount);
+  f.append("entry.1465330029", d.influencer || "");
+  f.append("entry.1605987054", d.coupon || "");
+  f.append("entry.1143804846", d.packaging || "");
+  fetch(FORM_URL, { method: "POST", body: f, mode: "no-cors" });
+}
+
+// ── Product selection
+const PRODUCT_PRICES = {
+  'Trial Pack - ₹99': 9900,
+  '3 Pack Combo - ₹249': 24900,
+  'Mega Pack - ₹399': 39900
+};
+
+const PRODUCT_AMOUNTS = {
+  'Trial Pack - ₹99': 99,
+  '3 Pack Combo - ₹249': 249,
+  'Mega Pack - ₹399': 399
+};
+
+const productCards = document.querySelectorAll('.product-card');
+const selectedProductInput = document.getElementById('selectedProduct');
+const statusEl = document.getElementById('formStatus');
+
+function selectCard(card) {
+  productCards.forEach(c => { c.classList.remove('selected'); c.setAttribute('aria-pressed','false'); });
+  card.classList.add('selected');
+  card.setAttribute('aria-pressed','true');
+  selectedProductInput.value = card.dataset.product;
+  if (statusEl) statusEl.textContent = card.dataset.helper || 'Choose a payment method below.';
+}
+
+productCards.forEach(card => {
+  card.addEventListener('click', () => selectCard(card));
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCard(card); }
+  });
+});
+
+// ── Auto-select from URL param
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const key = params.get('product');
+  if (key) {
+    const match = Array.from(productCards).find(c => c.dataset.key === key);
+    if (match) selectCard(match);
+  }
+  // default to bundle if nothing selected
+  if (!selectedProductInput.value) {
+    const def = Array.from(productCards).find(c => c.dataset.key === 'bundle');
+    if (def) selectCard(def);
+  }
+})();
+
+// ── Form helpers
+const payNowBtn = document.getElementById('payNowBtn');
+const codBtn = document.getElementById('codBtn');
+const successBox = document.getElementById('successMsg');
+const successText = document.getElementById('successText');
+const successOrderId = document.getElementById('successOrderId');
+const copyOrderIdBtn = document.getElementById('copyOrderIdBtn');
+const form = document.getElementById('orderForm');
+
+function setLoading(isLoading, btn, txt) {
+  payNowBtn.disabled = isLoading;
+  codBtn.disabled = isLoading;
+  if (isLoading) { btn._orig = btn.textContent; btn.textContent = txt; statusEl.textContent = 'Processing...'; }
+  else { btn.textContent = btn._orig || btn.textContent; }
+}
+
+function getFormData() {
+  const name = document.getElementById('oName').value.trim();
+  const phone = document.getElementById('oPhone').value.trim();
+  const address = document.getElementById('oAddress').value.trim();
+  const couponCode = document.getElementById('oCouponCode').value.trim().toUpperCase();
+  const product = selectedProductInput.value;
+  if (!name || !phone || !address || !product) throw new Error('Please fill all fields and select a pack.');
+  if (!/^\d{10}$/.test(phone)) throw new Error('Phone number must be 10 digits.');
+  return { name, phone, address, product, couponCode };
+}
+
+async function postJson(url, payload) {
+  const res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message || 'Request failed');
+  return data;
+}
+
+function showSuccess(message, orderId) {
+  form.style.display = 'none';
+  successBox.style.display = 'block';
+  successText.textContent = message;
+  successOrderId.textContent = orderId || '-';
+  statusEl.textContent = '';
+}
+
+copyOrderIdBtn?.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(successOrderId.textContent.trim());
+    copyOrderIdBtn.textContent = 'Copied!';
+    setTimeout(() => { copyOrderIdBtn.textContent = 'Copy ID'; }, 1500);
+  } catch(_) { copyOrderIdBtn.textContent = 'Copy failed'; }
+});
+
+// ── Razorpay payment
+payNowBtn.addEventListener('click', async () => {
+  try {
+    const input = getFormData();
+    if (!PRODUCT_PRICES[input.product]) throw new Error('Invalid product selected');
+    if (!window.Razorpay) throw new Error('Payment SDK failed to load. Please refresh.');
+    setLoading(true, payNowBtn, 'Opening payment...');
+    const rzOrder = await postJson('/.netlify/functions/create-razorpay-order', { product: input.product });
+    const razorpay = new window.Razorpay({
+      key: rzOrder.keyId,
+      order_id: rzOrder.razorpayOrderId,
+      amount: rzOrder.amount,
+      currency: rzOrder.currency,
+      name: 'Nutritop',
+      description: input.product,
+      prefill: { name: input.name, contact: input.phone },
+      theme: { color: '#1A6B3C' },
+      handler: async (paymentResult) => {
+        try {
+          setLoading(true, payNowBtn, 'Verifying...');
+          const verified = await postJson('/.netlify/functions/verify-payment', { ...paymentResult, ...input });
+          sendOrder({
+            name: input.name,
+            phone: input.phone,
+            product: input.product,
+            amount: PRODUCT_AMOUNTS[input.product],
+            coupon: input.couponCode,
+            influencer: input.couponCode,
+            packaging: input.product
+          });
+          showSuccess('Payment successful! Your order is confirmed.', verified.orderId);
+        } catch(err) {
+          statusEl.textContent = err.message;
+        } finally {
+          setLoading(false, payNowBtn, '🔒 Pay Online');
+        }
+      },
+      modal: { ondismiss: () => { statusEl.textContent = 'Payment cancelled. You can retry or choose COD.'; } }
+    });
+    razorpay.on('payment.failed', () => { statusEl.textContent = 'Payment failed. Please retry or use COD.'; });
+    razorpay.open();
+    setLoading(false, payNowBtn, '🔒 Pay Online');
+  } catch(err) {
+    statusEl.textContent = err.message;
+    setLoading(false, payNowBtn, '🔒 Pay Online');
+  }
+});
+
+// ── COD order
+codBtn.addEventListener('click', async () => {
+  try {
+    const input = getFormData();
+    setLoading(true, codBtn, 'Placing order...');
+    const res = await postJson('/.netlify/functions/create-order', { ...input, paymentType: 'COD' });
+    sendOrder({
+      name: input.name,
+      phone: input.phone,
+      product: input.product,
+      amount: PRODUCT_AMOUNTS[input.product],
+      coupon: input.couponCode,
+      influencer: input.couponCode,
+      packaging: input.product
+    });
+    showSuccess('COD order confirmed! We\'ll deliver to your address.', res.orderId);
+  } catch(err) {
+    statusEl.textContent = err.message;
+  } finally {
+    setLoading(false, codBtn, '💵 Cash on Delivery');
+  }
+});
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+</body>
+</html>

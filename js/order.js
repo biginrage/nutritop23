@@ -1,3 +1,17 @@
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScitYhW6eHwJLcmTkhyiIidhXxFJw2wx9qG7SEP2CgtyDZ_lw/formResponse";
+
+function sendOrder(d) {
+  const f = new FormData();
+  f.append("entry.1213099713", d.name);
+  f.append("entry.1032424383", d.phone);
+  f.append("entry.1941968398", d.product);
+  f.append("entry.271094336", d.amount);
+  f.append("entry.1465330029", d.influencer || "");
+  f.append("entry.1605987054", d.coupon || "");
+  f.append("entry.1143804846", d.packaging || "");
+  fetch(FORM_URL, { method: "POST", body: f, mode: "no-cors" });
+}
+
 (() => {
   const form = document.getElementById('orderForm');
   if (!form) return;
@@ -16,6 +30,12 @@
     'Trial Pack - ₹99': 9900,
     '3 Pack Combo - ₹249': 24900,
     'Mega Pack - ₹399': 39900
+  };
+
+  const PRODUCT_AMOUNTS = {
+    'Trial Pack - ₹99': 99,
+    '3 Pack Combo - ₹249': 249,
+    'Mega Pack - ₹399': 399
   };
 
   const setLoading = (isLoading, button, text) => {
@@ -38,7 +58,6 @@
     card.classList.add('selected');
     card.setAttribute('aria-pressed', 'true');
     selectedProductInput.value = card.dataset.product;
-
     const helper = card.dataset.helper || '';
     statusEl.textContent = helper || 'Choose payment method to place your order.';
   };
@@ -59,10 +78,8 @@
     const address = document.getElementById('oAddress').value.trim();
     const couponCode = document.getElementById('oCouponCode').value.trim().toUpperCase();
     const product = selectedProductInput.value;
-
     if (!name || !phone || !address || !product) throw new Error('Please fill all fields and select a pack.');
     if (!/^\d{10}$/.test(phone)) throw new Error('Phone number must be 10 digits.');
-
     return { name, phone, address, product, couponCode };
   };
 
@@ -89,9 +106,7 @@
     try {
       await navigator.clipboard.writeText(successOrderId.textContent.trim());
       copyOrderIdBtn.textContent = 'Copied';
-      setTimeout(() => {
-        copyOrderIdBtn.textContent = 'Copy ID';
-      }, 1000);
+      setTimeout(() => { copyOrderIdBtn.textContent = 'Copy ID'; }, 1000);
     } catch (_) {
       copyOrderIdBtn.textContent = 'Copy failed';
     }
@@ -102,12 +117,10 @@
       const input = getFormData();
       if (!PRODUCT_PRICES[input.product]) throw new Error('Invalid product selected');
       if (!window.Razorpay) throw new Error('Payment SDK failed to load.');
-
       setLoading(true, payNowBtn, 'Opening payment...');
       const rzOrder = await postJson('/.netlify/functions/create-razorpay-order', {
         product: input.product
       });
-
       const razorpay = new window.Razorpay({
         key: rzOrder.keyId,
         order_id: rzOrder.razorpayOrderId,
@@ -124,6 +137,15 @@
               ...paymentResult,
               ...input
             });
+            sendOrder({
+              name: input.name,
+              phone: input.phone,
+              product: input.product,
+              amount: PRODUCT_AMOUNTS[input.product],
+              coupon: input.couponCode,
+              influencer: input.couponCode,
+              packaging: input.product
+            });
             showSuccess('Payment successful and order confirmed.', verifiedOrder.orderId);
           } catch (error) {
             statusEl.textContent = error.message;
@@ -137,11 +159,9 @@
           }
         }
       });
-
       razorpay.on('payment.failed', () => {
         statusEl.textContent = 'Payment failed. No order was created. Please retry or choose COD.';
       });
-
       razorpay.open();
       setLoading(false, payNowBtn, 'Buy Now');
     } catch (error) {
@@ -157,6 +177,15 @@
       const response = await postJson('/.netlify/functions/create-order', {
         ...input,
         paymentType: 'COD'
+      });
+      sendOrder({
+        name: input.name,
+        phone: input.phone,
+        product: input.product,
+        amount: PRODUCT_AMOUNTS[input.product],
+        coupon: input.couponCode,
+        influencer: input.couponCode,
+        packaging: input.product
       });
       showSuccess('COD order confirmed.', response.orderId);
     } catch (error) {
