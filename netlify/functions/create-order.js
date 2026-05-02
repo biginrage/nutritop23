@@ -165,4 +165,4 @@ exports.handler = async (event) => {
   }
 };
 
-module.exports = { processOrder };
+exports.processOrder = processOrder;
