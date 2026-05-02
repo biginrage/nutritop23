@@ -688,7 +688,7 @@ footer{background:var(--brown);padding:50px 7vw;}
     </div>
     <div class="howto30-cta reveal">
       <p>Takes less time than making chai. ₹19 per breakfast. Less than a samosa.</p>
-      <a href="https://wa.me/918127240991?text=Hi%20I%20want%20Trial%20Pack%20%E2%82%B999" target="_blank" class="btn-primary">📱 Order Trial Pack — ₹99</a>
+      <a href="#order" class="btn-primary" onclick="preselectProduct('Trial Pack - ₹99')">🛒 Order Trial Pack — ₹99</a>
     </div>
   </div>
 </section>
@@ -989,21 +989,20 @@ footer{background:var(--brown);padding:50px 7vw;}
       </div>
     </div>
     <div class="repeat-cta-row">
-      <a href="https://wa.me/918127240991?text=Hi%20I%20want%20Trial%20Pack%20%E2%82%B999" target="_blank" class="btn-primary">📱 Start With a Trial Pack — ₹99</a>
-      <a href="https://wa.me/918127240991?text=Hi%20I%20want%203%20Pack%20Bundle%20%E2%82%B9249" target="_blank" class="btn-secondary" style="color:#fff;border-color:rgba(255,255,255,.3);">Get the 3-Pack Bundle →</a>
+      <a href="#order" class="btn-primary" onclick="preselectProduct('Trial Pack - ₹99')">🛒 Start With a Trial Pack — ₹99</a>
+      <a href="#order" class="btn-secondary" style="color:#fff;border-color:rgba(255,255,255,.3);" onclick="preselectProduct('3 Pack Combo - ₹249')">Get the 3-Pack Bundle →</a>
     </div>
   </div>
 </section>
 
-<!-- ── ORDER ON WHATSAPP CTA BLOCK ── -->
+<!-- ── ORDER CTA BLOCK ── -->
 <section class="wa-cta-block">
   <div class="reveal">
     <img src="images/logo.jpeg" alt="NUTRITOP" style="width:70px;height:70px;border-radius:50%;object-fit:cover;margin:0 auto 18px;display:block;box-shadow:0 4px 20px rgba(0,0,0,.2);">
-    <h3>Order on WhatsApp — Fastest Way to Order 💬</h3>
-    <p>No forms. No checkout. No online payment. Just tap below, send a message, and we deliver to your door.</p>
-    <a href="https://wa.me/918127240991?text=Hi%20I%20want%20Trial%20Pack%20%E2%82%B999" target="_blank" class="btn-wa-big">💬 Order Trial Pack — ₹99 on WhatsApp</a>
-    <!-- UPDATED wa-sub-note -->
-    <div class="wa-sub-note">Free delivery in Lucknow &nbsp;·&nbsp; Pay on delivery &nbsp;·&nbsp; Delivered within 24 hours</div>
+    <h3>Order Instantly — Pay Online or on Delivery 🛒</h3>
+    <p>Secure Razorpay checkout or Cash on Delivery. Get an order ID in seconds, delivered to your door.</p>
+    <a href="#order" class="btn-wa-big" onclick="preselectProduct('Trial Pack - ₹99')">🛒 Order Trial Pack — ₹99</a>
+    <div class="wa-sub-note">Free delivery in Lucknow &nbsp;·&nbsp; Pay online or on delivery &nbsp;·&nbsp; Delivered within 24 hours</div>
   </div>
 </section>
 
@@ -1036,7 +1035,7 @@ footer{background:var(--brown);padding:50px 7vw;}
         <!-- NEW bullet in Trial Pack -->
         <li>Most customers reorder within 7 days</li>
       </ul>
-      <a href="https://wa.me/918127240991?text=Hi%20I%20want%20Trial%20Pack%20%E2%82%B999" target="_blank" class="btn-primary" style="width:100%;justify-content:center;">📱 Try 3 Breakfasts for ₹99</a>
+      <a href="#order" class="btn-primary" style="width:100%;justify-content:center;" onclick="preselectProduct('Trial Pack - ₹99')">🛒 Try 3 Breakfasts for ₹99</a>
     </div>
 
     <!-- Best Value — HERO -->
@@ -1054,7 +1053,7 @@ footer{background:var(--brown);padding:50px 7vw;}
         <li>Priority WhatsApp delivery</li>
         <li>Share a pack with the family</li>
       </ul>
-      <a href="https://wa.me/918127240991?text=Hi%20I%20want%203%20Pack%20Bundle%20%E2%82%B9249" target="_blank" class="btn-primary" style="width:100%;justify-content:center;background:var(--gold);color:var(--brown);">📱 Order 3-Pack Bundle</a>
+      <a href="#order" class="btn-primary" style="width:100%;justify-content:center;background:var(--gold);color:var(--brown);" onclick="preselectProduct('3 Pack Combo - ₹249')">🛒 Order 3-Pack Bundle</a>
     </div>
 
     <!-- Premium -->
@@ -1071,7 +1070,7 @@ footer{background:var(--brown);padding:50px 7vw;}
         <li>Richer flavour, more nutrients</li>
         <li>Free delivery in Lucknow</li>
       </ul>
-      <a href="https://wa.me/918127240991?text=Hi%20I%20want%20Premium%20Pack%20%E2%82%B9139" target="_blank" class="btn-secondary" style="width:100%;justify-content:center;">📱 Order Premium Pack</a>
+      <a href="#order" class="btn-secondary" style="width:100%;justify-content:center;" onclick="preselectProduct('Mega Pack - ₹399')">🛒 Order Premium Pack</a>
     </div>
   </div>
 
@@ -1245,6 +1244,22 @@ footer{background:var(--brown);padding:50px 7vw;}
 </div>
 
 <script>
+// ── Pre-select product from pricing buttons
+function preselectProduct(productName) {
+  const cards = document.querySelectorAll('.product-card');
+  const hiddenInput = document.getElementById('selectedProduct');
+  const statusEl = document.getElementById('formStatus');
+  cards.forEach(card => {
+    const isMatch = card.dataset.product === productName;
+    card.classList.toggle('selected', isMatch);
+    card.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+    if (isMatch && hiddenInput) {
+      hiddenInput.value = productName;
+      if (statusEl) statusEl.textContent = card.dataset.helper || 'Choose payment method to place your order.';
+    }
+  });
+}
+
 // ── Scroll Reveal
 const io = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
