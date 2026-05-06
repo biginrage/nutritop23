@@ -37,17 +37,12 @@ async function saveToAirtable(order) {
     body: JSON.stringify({
       records: [{
         fields: {
-          OrderId: order.orderId,
           Name: order.name,
           Phone: order.phone,
-          Address: order.address,
           Product: order.product,
-          Payment: order.payment,
-          Status: order.status,
-          CreatedAt: order.createdAt,
-          RazorpayOrderId: order.razorpayOrderId || '',
-          RazorpayPaymentId: order.razorpayPaymentId || '',
-          CouponCode: order.couponCode || ''
+          Amount: order.amount || '',
+          Coupon: order.couponCode || '',
+          'Tracking Id': order.orderId
         }
       }]
     })
