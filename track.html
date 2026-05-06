@@ -64,24 +64,34 @@
       const q = input.value.trim();
       err.textContent = '';
       result.style.display = 'none';
-      if (!q) { err.textContent = 'No order found'; return; }
+      if (!q) { err.textContent = 'Please enter your Tracking ID or phone number.'; return; }
       btn.disabled = true; btn.textContent = 'Tracking...';
       try {
-        const formula = q.match(/^\d{10}$/)
-          ? `{Phone}='${esc(q)}'`
-          : `OR({Phone}='${esc(q)}', {Tracking Id}='${esc(q)}')`;
+        const isPhone = /^\d{10}$/.test(q);
+        let formula;
+        if (isPhone) {
+          // match 10-digit, +91 prefix, or 91 prefix variants
+          formula = `OR({Phone}='${esc(q)}',{Phone}='+91${esc(q)}',{Phone}='91${esc(q)}')`;
+        } else {
+          formula = `OR({Tracking Id}='${esc(q)}',{Phone}='${esc(q)}')`;
+        }
         const url = new URL(`https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE)}`);
         url.searchParams.set('maxRecords', '1');
         url.searchParams.set('filterByFormula', formula);
         const res = await fetch(url.toString(), { headers: { Authorization: `Bearer ${TOKEN}` } });
         const data = await res.json();
-        const row = data.records && data.records[0] && data.records[0].fields;
-        if (!row) { err.textContent = 'No order found'; return; }
-        statusEl.textContent = mapStatus(row.Status || row.status || 'Order Received');
-        trackingIdEl.textContent = row['Tracking Id'] || row.TrackingId || row.TrackingID || row['Tracking ID'] || '-';
+        const record = data.records && data.records[0];
+        const row = record && record.fields;
+        // treat as not found if fields are empty or missing key data
+        if (!row || (!row['Tracking Id'] && !row['Phone'] && !row['Status'])) {
+          err.textContent = 'No order found. Please check your Tracking ID or phone number.';
+          return;
+        }
+        statusEl.textContent = mapStatus(row['Status'] || 'Order Received');
+        trackingIdEl.textContent = row['Tracking Id'] || '-';
         result.style.display = 'block';
       } catch (e) {
-        err.textContent = 'No order found';
+        err.textContent = 'Unable to fetch order. Please try again.';
       } finally {
         btn.disabled = false; btn.textContent = 'Track';
       }
