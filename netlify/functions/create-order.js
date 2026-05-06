@@ -152,7 +152,12 @@ async function processOrder(data) {
     razorpayPaymentId
   };
 
-  const storageResult = await saveToAirtable(order);
+  let storageResult;
+  try {
+    storageResult = await saveToAirtable(order);
+  } catch (error) {
+    storageResult = { saved: false, reason: error.message };
+  }
 
   let trackingResult;
   try {
