@@ -59,6 +59,36 @@ async function saveToAirtable(order) {
   return { saved: true };
 }
 
+const TRACKING_BASE_ID = 'app2mBKhvibO1VjD3';
+
+async function saveToTracking(order) {
+  const token = process.env.AIRTABLE_API_KEY;
+  if (!token) {
+    return { tracked: false, reason: 'AIRTABLE_API_KEY missing' };
+  }
+  const response = await fetch(`https://api.airtable.com/v0/${TRACKING_BASE_ID}/Tracking`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      records: [{
+        fields: {
+          'Tracking Id': order.orderId,
+          'Phone': order.phone,
+          'Status': 'Order Received'
+        }
+      }]
+    })
+  });
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Tracking save failed: ${response.status} ${text}`);
+  }
+  return { tracked: true };
+}
+
 async function sendWebhook(order) {
   const { MAKE_WEBHOOK_URL } = process.env;
   if (!MAKE_WEBHOOK_URL) {
@@ -124,6 +154,13 @@ async function processOrder(data) {
 
   const storageResult = await saveToAirtable(order);
 
+  let trackingResult;
+  try {
+    trackingResult = await saveToTracking(order);
+  } catch (error) {
+    trackingResult = { tracked: false, reason: error.message };
+  }
+
   let webhookResult;
   try {
     webhookResult = await sendWebhook(order);
@@ -138,6 +175,7 @@ async function processOrder(data) {
       orderId,
       status: order.status,
       storage: storageResult,
+      tracking: trackingResult,
       webhook: webhookResult
     }
   };
