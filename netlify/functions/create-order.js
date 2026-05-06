@@ -20,68 +20,24 @@ function isValidPhone(phone) {
   return /^\d{10}$/.test(phone);
 }
 
-const AIRTABLE_BASE_ID = 'app2mBKhvibO1VjD3';
+async function sendToGoogleForms(order) {
+  const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScitYhW6eHwJLcmTkhyiIidhXxFJw2wx9qG7SEP2CgtyDZ_lw/formResponse';
+  const body = new URLSearchParams();
+  body.set('entry.1213099713', order.name);
+  body.set('entry.1032424383', order.phone);
+  body.set('entry.1941968398', order.product);
+  body.set('entry.271094336', String(order.amount || ''));
+  body.set('entry.1465330029', order.couponCode || '');
+  body.set('entry.1605987054', order.couponCode || '');
+  body.set('entry.1143804846', order.product || '');
 
-async function saveToAirtable(order) {
-  const { AIRTABLE_API_KEY, AIRTABLE_TABLE_NAME = 'Orders' } = process.env;
-  if (!AIRTABLE_API_KEY) {
-    return { saved: false, reason: 'AIRTABLE_API_KEY missing' };
-  }
-
-  const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`, {
+  const response = await fetch(formUrl, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      records: [{
-        fields: {
-          Name: order.name,
-          Phone: order.phone,
-          Product: order.product,
-          Amount: order.amount || '',
-          Coupon: order.couponCode || '',
-          'Tracking Id': order.orderId
-        }
-      }]
-    })
+    mode: 'no-cors',
+    body
   });
 
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`Airtable save failed: ${response.status} ${text}`);
-  }
-
-  return { saved: true };
-}
-
-async function saveToTracking(order) {
-  const token = process.env.AIRTABLE_API_KEY;
-  if (!token) {
-    return { tracked: false, reason: 'AIRTABLE_API_KEY missing' };
-  }
-  const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Tracking`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      records: [{
-        fields: {
-          'Tracking Id': order.orderId,
-          'Phone': order.phone,
-          'Status': 'Order Received'
-        }
-      }]
-    })
-  });
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`Tracking save failed: ${response.status} ${text}`);
-  }
-  return { tracked: true };
+  return { sent: true };
 }
 
 async function sendWebhook(order) {
@@ -149,16 +105,9 @@ async function processOrder(data) {
 
   let storageResult;
   try {
-    storageResult = await saveToAirtable(order);
+    storageResult = await sendToGoogleForms(order);
   } catch (error) {
-    storageResult = { saved: false, reason: error.message };
-  }
-
-  let trackingResult;
-  try {
-    trackingResult = await saveToTracking(order);
-  } catch (error) {
-    trackingResult = { tracked: false, reason: error.message };
+    storageResult = { sent: false, reason: error.message };
   }
 
   let webhookResult;
@@ -175,7 +124,6 @@ async function processOrder(data) {
       orderId,
       status: order.status,
       storage: storageResult,
-      tracking: trackingResult,
       webhook: webhookResult
     }
   };
