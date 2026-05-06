@@ -20,10 +20,12 @@ function isValidPhone(phone) {
   return /^\d{10}$/.test(phone);
 }
 
+const AIRTABLE_BASE_ID = 'app2mBKhvibO1VjD3';
+
 async function saveToAirtable(order) {
-  const { AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_TABLE_NAME = 'Orders' } = process.env;
-  if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
-    return { saved: false, reason: 'Airtable env vars missing' };
+  const { AIRTABLE_API_KEY, AIRTABLE_TABLE_NAME = 'Orders' } = process.env;
+  if (!AIRTABLE_API_KEY) {
+    return { saved: false, reason: 'AIRTABLE_API_KEY missing' };
   }
 
   const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`, {
@@ -59,14 +61,12 @@ async function saveToAirtable(order) {
   return { saved: true };
 }
 
-const TRACKING_BASE_ID = 'app2mBKhvibO1VjD3';
-
 async function saveToTracking(order) {
   const token = process.env.AIRTABLE_API_KEY;
   if (!token) {
     return { tracked: false, reason: 'AIRTABLE_API_KEY missing' };
   }
-  const response = await fetch(`https://api.airtable.com/v0/${TRACKING_BASE_ID}/Tracking`, {
+  const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Tracking`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
